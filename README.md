@@ -25,7 +25,7 @@ After detecting R-peaks, we segment each heartbeat using a **constant division r
 This method (Figure 2) avoids contamination from overlapping beats, even when heart rates vary. All beats are then **resampled to 256 points** for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
 
 **Figure 2 – ECG heartbeat segmentation method**  
-![segmentation](images/Segmentation.png)
+![segmentation](Segmentation.png)
 
 ---
 
@@ -34,7 +34,7 @@ This method (Figure 2) avoids contamination from overlapping beats, even when he
 Rather than pooling beats from all patients, we apply **UMAP** or **t-SNE** to each patient individually. This makes it easier to visualize and cluster beat types without supervision, as shown in Figure 3.
 
 **Figure 3 – Dimensionality reduction and clustering for Recording 207**  
-![recording-207](images/207_all.png)
+![recording-207](207_all.png)
 
 ---
 
@@ -43,4 +43,4 @@ Rather than pooling beats from all patients, we apply **UMAP** or **t-SNE** to e
 When mixing beats from multiple patients, the embeddings naturally cluster by patient. This highlights how strong inter-patient variability is—even without labels.
 
 **Figure 4 – Pipeline for ECG preprocessing and analysis**  
-![methods](images/methods.png)
+![methods](methods.png)
