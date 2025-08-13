@@ -4,17 +4,16 @@
 
 ## 🩺 Problem Statement
 
-Automated heartbeat analysis is a crucial step in arrhythmia detection, yet most existing methods rely heavily on **supervised learning**, which depends on large, labeled datasets. This approach faces three main challenges:
+Automated heartbeat analysis is a crucial step in arrhythmia detection, yet most existing methods rely heavily on **supervised learning**, which requires large, labeled datasets. This approach faces three main challenges:
 
-1. **Lead Variability** – A standard 12-lead ECG records twelve distinct waveforms for each heartbeat. Models trained for one lead do not directly generalize to another. Many datasets, including the **MIT-BIH Arrhythmia Database**, contain only two leads per recording—Lead II (MLII) and a second lead (either V1, V2, V4, or V5)—making it difficult to develop lead-independent models. Even small electrode placement changes during testing can alter signal morphology enough to cause model failure.
+1. **Lead Variability** – A standard 12-lead ECG records twelve distinct waveforms at each time point. Models trained for one lead do not directly generalize to another. Many publicly available datasets, such as **MIT-BIH Arrhythmia Database**, contain only two leads per recording—Lead II (MLII) and another lead (either V1, V2, V4, or V5)—making it difficult to develop lead-independent models. Even small electrode placement changes during testing can alter signal morphology enough to cause model failure.
 
 2. **Patient Variability** – ECG signals with the same arrhythmia label can differ substantially between individuals. This inter-patient variability reduces robustness to unseen patients.
 
-   
 ![different_people_ecg_variability](different_people_MIT-BIH.png)
 **Figure 1 – ECG Variability Across People.** Top row: Normal beats (N), middle row: Premature ventricular contractions (V), bottom row: Atrial premature beats (A). All signals are recorded using MLII from the MIT-BIH dataset.
 
-3. **Dataset Bias** – In MIT-BIH, more than **80%** of beats are normal, and most arrhythmic beats are premature ventricular contractions (PVCs). This imbalance leads many models to overfit common patterns while performing poorly on rare arrhythmias. Further, label standards differ between datasets, limiting cross-dataset transferability.
+3. **Dataset Bias** – In the MIT-BIH dataset, over **80%** of beats are normal, with most arrhythmic beats being premature ventricular contractions (PVCs). This class imbalance causes many models to overfit common patterns while underperforming on rare arrhythmias. Supervised learning is fundamentally limited to the labels provided in the training set and cannot produce labels outside of it. Furthermore, labeling standards differ across datasets, such as the AAMI standard, which limits cross-dataset generalization.
 
 ---
 
