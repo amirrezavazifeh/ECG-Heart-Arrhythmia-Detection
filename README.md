@@ -21,7 +21,7 @@ Cardiac arrhythmia, a condition that disrupts the heart’s normal rhythm and al
 
 ## 💡 Our Approach
 
-We address these challenges by combining **unsupervised dimensionality reduction** with **heartbeat-level analysis**.  
+We address these challenges by combining **unsupervised non-linear dimensionality reduction** with **heartbeat-level analysis**.  
 Our approach has three stages:  
 
 1. Pre-processing and segmenting each heartbeat from raw ECG  
@@ -36,7 +36,7 @@ After detecting R-peaks, we segment each heartbeat using a **constant division r
 - The first two-thirds of the upcoming RR interval  
 - Plus the last one-third of the previous RR interval  
 
-This method (Figure 2) avoids contamination from overlapping beats, even when heart rates vary. All beats are then **resampled to 256 points** for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
+This method (Figure 2) avoids contamination from overlapping beats, even when heart rates vary. All beats are then resampled to 256 points for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
 ![segmentation](Figures/Segmentation.png)
 **Figure 2** – ECG Heartbeat Segmentation Method. Three examples from different recordings are shown, including normal beats, premature ventricular contractions (PVCs), and premature atrial contractions (PACs), demonstrating that our segmentation performs well under different arrhythmic conditions.
 
