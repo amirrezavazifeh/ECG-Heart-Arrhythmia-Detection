@@ -47,9 +47,9 @@ This method (Figure 3) avoids contamination from overlapping beats, even when he
 
 ### 2. Dimensionality Reduction per Patient
 
-Heartbeat signals collected from each patient are analyzed separately using [**t-distributed Stochastic Neighbor Embedding (t-SNE)**](https://www.jmlr.org/papers/v9/vandermaaten08a.html) or [**Uniform Manifold Approximation and Projection (UMAP)**](https://arxiv.org/abs/1802.03426), making it easier to visualize and cluster beat types without supervision, as shown in Figure 3.
+Heartbeat signals collected from each patient are analyzed separately using [t-distributed Stochastic Neighbor Embedding (t-SNE)](https://www.jmlr.org/papers/v9/vandermaaten08a.html) or [Uniform Manifold Approximation and Projection (UMAP)](https://arxiv.org/abs/1802.03426), making it easier to visualize and cluster beat types without supervision, as shown in Figure 3.
 
-Both methods are neighbor-embedding techniques that aim to preserve the structure of high-dimensional data: points that are close in the original space remain close in the low-dimensional embedding, while distant points are placed far apart. Compared to t-SNE, UMAP is faster, preserves more global structure, and scales better to large datasets.
+Both methods are neighbor-embedding techniques that aim to preserve the graph structure of high-dimensional data: points that are close in the original space remain close in the low-dimensional embedding, while distant points are placed far apart. Compared to t-SNE, UMAP is faster, preserves more global structure, and scales better to large datasets.
 
 
 ### 3. Clustering
