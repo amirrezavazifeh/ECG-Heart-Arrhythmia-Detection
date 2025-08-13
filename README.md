@@ -1,4 +1,4 @@
-# ECG Visualization and Analysis using Dimensionality Reduction
+# Manifold Learning for Personalized Heart Arrhythmia Detection
 
 ---
 
