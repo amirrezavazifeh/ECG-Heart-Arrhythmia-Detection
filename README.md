@@ -26,6 +26,9 @@ We address these challenges by combining **unsupervised non-linear dimensionalit
 2. **Dimensionality Reduction:** Project heartbeats into 2D for visualization.  
 3. **Clustering:** Group similar heartbeats in 2D space.
 
+![methods](Figures/methods.png)
+**Figure 2** – Pipeline for ECG preprocessing and analysis**  
+
 ### 1. Heartbeat Segmentation & Preprocessing
 
 The first step in real-world analysis is to segment the ECG signals into isolated heartbeats. This requires detecting **R-peaks** from the raw signal. Although many algorithms exist for R-peak detection—such as [Christov](https://biomedical-engineering-online.biomedcentral.com/articles/10.1186/1475-925X-3-28), [Pan–Tompkins](https://ieeexplore.ieee.org/document/4122029), and [NeuroKit2](https://link.springer.com/article/10.3758/s13428-020-01516-y)—a [recent study of ours](https://ieeexplore.ieee.org/document/9745967) found NeuroKit2 to be the most accurate. Since MIT-BIH already provides annotated R-peak locations, we use these directly.
@@ -34,9 +37,9 @@ After detecting R-peaks, we segment each heartbeat using a **constant division r
 - The first two-thirds of the upcoming RR interval  
 - Plus the last one-third of the previous RR interval  
 
-This method (Figure 2) avoids contamination from overlapping beats, even when heart rates vary. All beats are then resampled to 256 points for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
+This method (Figure 3) avoids contamination from overlapping beats, even when heart rates vary. All beats are then resampled to 256 points for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
 ![segmentation](Figures/Segmentation.png)
-**Figure 2** – ECG Heartbeat Segmentation Method. Three examples from different recordings are shown, including normal beats, premature ventricular contractions (PVCs), and premature atrial contractions (PACs), demonstrating that our segmentation performs well under different arrhythmic conditions.
+**Figure 3** – ECG Heartbeat Segmentation Method. Three examples from different recordings are shown, including normal beats, premature ventricular contractions (PVCs), and premature atrial contractions (PACs), demonstrating that our segmentation performs well under different arrhythmic conditions.
 
 
 
@@ -45,10 +48,6 @@ This method (Figure 2) avoids contamination from overlapping beats, even when he
 ### 2. Dimensionality Reduction per Patient
 
 Rather than pooling beats from all patients, we apply **UMAP** or **t-SNE** to each patient individually. This makes it easier to visualize and cluster beat types without supervision, as shown in Figure 3.
-
-![methods](Figures/methods.png)
-**Figure 3 – Pipeline for ECG preprocessing and analysis**  
-
 
 ---
 
