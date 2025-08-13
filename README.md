@@ -62,9 +62,9 @@ Please download it from the link above.
 
 ### Personalized Analysis
 To produce results for each person, run:
-[ECG_on_Colab_Generating_Results.ipynb](ECG_on_Colab_Generating_Results.ipynb)  
+[Personalized_Arrhythmia_Detection.ipynb](Personalized_Arrhythmia_Detection.ipynb)  
 This notebook will:
-- Process the ECG signals
+- Process the ECG signals and segment heartbeats
 - Apply dimensionality reduction
 - Generate all the results used in the paper
 
@@ -74,11 +74,19 @@ This notebook will:
 
 ### Population Study
 To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run:
-
+[Population_Analysis.ipynb](Population_Analysis.ipynb)  
 
 
 ---
 
 ### ECG Segmentation Playground
 To experiment with ECG signal segmentation, run:
+[ECG_Segmentation.ipynb](ECG_Segmentation.ipynb)  
+
+---
+
+### Clustering
+To experiment with ECG signal segmentation, run:
+[Clustering Algorithms.ipynb](Clustering Algorithms.ipynb)  
+
 
