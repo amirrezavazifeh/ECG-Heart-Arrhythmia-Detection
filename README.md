@@ -30,9 +30,9 @@ After detecting R-peaks, we segment each heartbeat using a **constant division r
 - The first two-thirds of the upcoming RR interval  
 - Plus the last one-third of the previous RR interval  
 
-This method (Figure 1) avoids contamination from overlapping beats, even when heart rates vary. All beats are then **resampled to 256 points** for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
+This method (Figure 2) avoids contamination from overlapping beats, even when heart rates vary. All beats are then **resampled to 256 points** for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
 
-**Figure 1 – ECG heartbeat segmentation method**  
+**Figure 2 – ECG heartbeat segmentation method**  
 ![segmentation](Segmentation.png)
 
 ---
