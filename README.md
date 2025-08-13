@@ -41,17 +41,18 @@ This method (Figure 2) avoids contamination from overlapping beats, even when he
 
 Rather than pooling beats from all patients, we apply **UMAP** or **t-SNE** to each patient individually. This makes it easier to visualize and cluster beat types without supervision, as shown in Figure 2.
 
-**Figure 2 – Dimensionality reduction and clustering for Recording 207**  
-![recording-207](207_all.png)
+**Figure 2 – Pipeline for ECG preprocessing and analysis**  
+![methods](methods.png)
 
 ---
 
-### 3. Cross-Patient Comparison
+### 3. Results
 
 When mixing beats from multiple patients, the embeddings naturally cluster by patient. This highlights how strong inter-patient variability is—even without labels.
 
-**Figure 3 – Pipeline for ECG preprocessing and analysis**  
-![methods](methods.png)
+**Figure 3 – Dimensionality reduction and clustering for Recording 207**  
+![recording-207](207_all.png)
+
 
 ---
 
