@@ -20,12 +20,11 @@ Cardiac arrhythmia, a condition that disrupts the heart’s normal rhythm and al
 ---
 
 ## 💡 Our Approach
+We address these challenges by combining **unsupervised non-linear dimensionality reduction** with **heartbeat-level analysis**. The approach has three stages:
 
-We address these challenges by combining **unsupervised non-linear dimensionality reduction** with **heartbeat-level analysis**. Our approach has three stages:  
-
-1. Pre-processing and segmenting each heartbeat from raw ECG  
-2. Applying nonlinear dimensionality reduction for 2D visualization  
-3. Clustering in 2D
+1. **Segmentation and Preprocessing:** Segment individual heartbeats from raw ECG.  
+2. **Dimensionality Reduction:** Project heartbeats into 2D for visualization.  
+3. **Clustering:** Group similar heartbeats in 2D space.
 
 ### 1. Heartbeat Segmentation & Preprocessing
 
