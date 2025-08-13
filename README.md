@@ -20,7 +20,7 @@ We address these challenges by combining **unsupervised dimensionality reduction
 
 ### 1. Heartbeat Segmentation & Preprocessing
 
-The first step in real-world analysis is to segment the ECG signals into isolated heartbeats. This requires detecting **R-peaks** from the raw signal. Although many algorithms exist—such as Christov, Pan–Tompkins, and NeuroKit2—a recent study found NeuroKit2 to be the most accurate. Since MIT-BIH already provides annotated R-peak locations, we use these directly.
+The first step in real-world analysis is to segment the ECG signals into isolated heartbeats. This requires detecting **R-peaks** from the raw signal. Although many algorithms exist—such as Christov, Pan–Tompkins, and [NeuroKit2][https://link.springer.com/article/10.3758/s13428-020-01516-y]—a [recent study of ours][https://ieeexplore.ieee.org/document/9745967] found NeuroKit2 to be the most accurate. Since MIT-BIH already provides annotated R-peak locations, we use these directly.
 
 After detecting R-peaks, we segment each heartbeat using a **constant division ratio** between consecutive beats:  
 - The first two-thirds of the upcoming RR interval  
