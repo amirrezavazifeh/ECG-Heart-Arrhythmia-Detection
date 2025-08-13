@@ -1,10 +1,10 @@
-# Manifold Learning for Personalized Heart Arrhythmia Detection
+# Manifold Learning for Personalized and Label-free Heart Arrhythmia Detection
 
 ---
 
 ## 🩺 Problem Statement
 
-Automated heartbeat analysis is a crucial step in arrhythmia detection, yet most existing methods rely heavily on **supervised learning**, which requires large, labeled datasets. This approach faces three main challenges:
+Cardiac arrhythmia, a condition that disrupts the heart’s normal rhythm and alters the ECG signal, poses a serious health risk. Detecting arrhythmias requires accurate analysis of heartbeat patterns, yet most existing methods rely heavily on **supervised learning**, which requires large, labeled datasets. This approach faces three main challenges:
 
 1. **Lead Variability** – A standard 12-lead ECG records twelve distinct waveforms at each time point. Models trained for one lead do not directly generalize to another. Many publicly available datasets, such as **MIT-BIH Arrhythmia Database**, contain only two leads per recording—Lead II (MLII) and another lead (either V1, V2, V4, or V5)—making it difficult to develop lead-independent models. Even small electrode placement changes during testing can alter signal morphology enough to cause model failure.
 
