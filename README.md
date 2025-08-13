@@ -1,5 +1,4 @@
-# Manifold Learning for Personalized and Label-free
-Heart Arrhythmia Detection
+# Manifold Learning for Personalized and Label-free Heart Arrhythmia Detection
 
 ---
 
