@@ -90,3 +90,23 @@ To experiment with ECG signal segmentation, run:
 [Clustering Algorithms.ipynb](Clustering Algorithms.ipynb)  
 
 
+
+---
+
+---
+
+## 📜 Citation
+
+If you found this repository useful, please consider citing our paper:
+
+```bibtex
+@misc{vazifeh2025manifoldlearningpersonalizedlabelfree,
+      title={Manifold Learning for Personalized and Label-Free Detection of Cardiac Arrhythmias}, 
+      author={Amir Reza Vazifeh and Jason W. Fleischer},
+      year={2025},
+      eprint={2506.16494},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2506.16494}, 
+}
+
