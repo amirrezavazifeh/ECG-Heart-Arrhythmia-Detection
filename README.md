@@ -17,7 +17,6 @@ Cardiac arrhythmia, a condition that disrupts the heart’s normal rhythm and al
 3. **Dataset Bias** – Training datasets often exhibit bias in both demographic representation and arrhythmia types. In the MIT-BIH dataset, over 80% of beats are normal, and most arrhythmic beats are premature ventricular contractions (PVCs). This imbalance causes many models to overfit common arrhythmias, such as PVCs, while underperforming on rare arrhythmias. Supervised learning is fundamentally limited to the labels provided in the training set and cannot generate labels outside of it. Additionally, different labeling standards for ECG signals limit cross-dataset generalization.
 
 
-
 ---
 
 ## 💡 Our Approach
@@ -38,9 +37,9 @@ After detecting R-peaks, we segment each heartbeat using a **constant division r
 - Plus the last one-third of the previous RR interval  
 
 This method (Figure 2) avoids contamination from overlapping beats, even when heart rates vary. All beats are then **resampled to 256 points** for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
-
 ![segmentation](Figures/Segmentation.png)
-**Figure 2 – ECG heartbeat segmentation method**  
+**Figure 2** – ECG Heartbeat Segmentation Method. Three examples from different recordings are shown, including normal beats, premature ventricular contractions (PVCs), and premature atrial contractions (PACs), demonstrating that our segmentation performs well under different arrhythmic conditions.
+
 
 
 ---
