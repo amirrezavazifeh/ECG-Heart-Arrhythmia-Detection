@@ -31,7 +31,7 @@ After detecting R-peaks, we segment each heartbeat using a **constant division r
 
 This method (Figure 2) avoids contamination from overlapping beats, even when heart rates vary. All beats are then **resampled to 256 points** for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
 
-![segmentation](Segmentation.png)
+![segmentation](Figures/Segmentation.png)
 **Figure 2 – ECG heartbeat segmentation method**  
 
 
@@ -41,7 +41,7 @@ This method (Figure 2) avoids contamination from overlapping beats, even when he
 
 Rather than pooling beats from all patients, we apply **UMAP** or **t-SNE** to each patient individually. This makes it easier to visualize and cluster beat types without supervision, as shown in Figure 3.
 
-![methods](methods.png)
+![methods](Figures/methods.png)
 **Figure 3 – Pipeline for ECG preprocessing and analysis**  
 
 
@@ -51,10 +51,10 @@ Rather than pooling beats from all patients, we apply **UMAP** or **t-SNE** to e
 
 When mixing beats from multiple patients, the embeddings naturally cluster by patient. This highlights how strong inter-patient variability is—even without labels.
 
-![recording-207](207_all.png)
+![recording-207](Figures/207_all.png)
 **Figure 4 – Dimensionality reduction and clustering for Recording 207** 
 
-![recording-207](DR_6x4_plot.jpg)
+![recording-207](Figures/DR_6x4_plot.jpg)
 **Figure 5 – Dimensionality reduction on mixed population**  
 
 ---
@@ -70,7 +70,7 @@ Please download it from the link above.
 
 ### Personalized Analysis
 To produce results for each person, run:
-[Personalized_Arrhythmia_Detection.ipynb](Personalized_Arrhythmia_Detection.ipynb)  
+[Personalized_Arrhythmia_Detection.ipynb](codes/Personalized_Arrhythmia_Detection.ipynb)  
 This notebook will:
 - Process the ECG signals and segment heartbeats
 - Apply dimensionality reduction
@@ -82,20 +82,20 @@ This notebook will:
 
 ### Population Study
 To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run:
-[Population_Analysis.ipynb](Population_Analysis.ipynb)  
+[Population_Analysis.ipynb](Codes/Population_Analysis.ipynb)  
 
 
 ---
 
 ### ECG Segmentation Playground
 To experiment with ECG signal segmentation, run:
-[ECG_Segmentation.ipynb](ECG_Segmentation.ipynb)  
+[ECG_Segmentation.ipynb](Codes/ECG_Segmentation.ipynb)  
 
 ---
 
 ### Clustering
 To experiment with ECG signal segmentation, run:
-[Clustering Algorithms.ipynb](Clustering Algorithms.ipynb)  
+[Clustering Algorithms.ipynb](Codes/Clustering Algorithms.ipynb)  
 
 
 
