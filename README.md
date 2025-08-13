@@ -12,7 +12,7 @@ Automated heartbeat analysis is a crucial step in arrhythmia detection, yet most
 
    
 ![different_people_ecg_variability](different_people_MIT-BIH.png)
-**Figure 1 – ECG heartbeat segmentation across individuals.** Top row: Normal beats (N), middle row: Premature ventricular contractions (V), bottom row: Atrial premature beats (A). All signals are recorded using MLII from the MIT-BIH dataset.
+**Figure 1 – ECG Variability Across People.** Top row: Normal beats (N), middle row: Premature ventricular contractions (V), bottom row: Atrial premature beats (A). All signals are recorded using MLII from the MIT-BIH dataset.
 
 3. **Dataset Bias** – In MIT-BIH, more than **80%** of beats are normal, and most arrhythmic beats are premature ventricular contractions (PVCs). This imbalance leads many models to overfit common patterns while performing poorly on rare arrhythmias. Further, label standards differ between datasets, limiting cross-dataset transferability.
 
