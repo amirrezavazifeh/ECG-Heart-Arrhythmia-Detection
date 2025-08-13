@@ -27,7 +27,7 @@ We address these challenges by combining **unsupervised non-linear dimensionalit
 3. **Clustering:** Group similar heartbeats in 2D space.
 
 ![methods](Figures/methods.png)
-**Figure 2** – Pipeline for ECG preprocessing and analysis**  
+**Figure 2** – Pipeline for ECG preprocessing and analysis
 
 ### 1. Heartbeat Segmentation & Preprocessing
 
