@@ -55,12 +55,8 @@ When mixing beats from multiple patients, the embeddings naturally cluster by pa
 ![recording-207](207_all.png)
 **Figure 4 – Dimensionality reduction and clustering for Recording 207** 
 
-![recording-207](DR_6x4_plot.png)
+![recording-207](DR_6x4_plot.jpg)
 **Figure 5 – Dimensionality reduction on mixed population**  
-
-
-
-
 
 ---
 
