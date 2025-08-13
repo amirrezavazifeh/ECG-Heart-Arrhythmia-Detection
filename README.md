@@ -49,14 +49,18 @@ This method (Figure 3) avoids contamination from overlapping beats, even when he
 
 Rather than pooling beats from all patients, we apply **UMAP** or **t-SNE** to each patient individually. This makes it easier to visualize and cluster beat types without supervision, as shown in Figure 3.
 
+### 3. Clustering
+
+
 ---
 
-### 3. Results
+## 📊 Results
 
-When mixing beats from multiple patients, the embeddings naturally cluster by patient. This highlights how strong inter-patient variability is—even without labels.
 
 ![recording-207](Figures/207_all.png)
 **Figure 4 – Dimensionality reduction and clustering for Recording 207** 
+
+When mixing beats from multiple patients, the embeddings naturally cluster by patient. This highlights how strong inter-patient variability is—even without labels.
 
 ![recording-207](Figures/DR_6x4_plot.jpg)
 **Figure 5 – Dimensionality reduction on mixed population**  
