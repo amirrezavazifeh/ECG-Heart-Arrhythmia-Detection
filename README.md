@@ -51,7 +51,7 @@ Heartbeat signals collected from each patient are analyzed separately using [t-d
 
 
 ### 3. Clustering
-
+![methods](Figures/clustering.png)
 
 ---
 
