@@ -1,36 +1,33 @@
-# ECG Visualization and Analysis using Dimensionality Reduction
+## 🩺 Problem Statement
 
-## 📂 Dataset
+Automated heartbeat analysis is a crucial step in arrhythmia detection, yet most existing methods rely heavily on **supervised learning**, which depends on large, labeled datasets. This approach faces three main challenges:
 
-The dataset used is the [MIT-BIH Arrhythmia Database](https://www.physionet.org/content/mitdb/1.0.0/).  
-Please download it from the link above.
+1. **Lead Variability** – A standard 12-lead ECG records twelve distinct waveforms for each heartbeat (see Figure 1). Models trained for one lead do not directly generalize to another. Many datasets, including the **MIT-BIH Arrhythmia Database**, contain only two leads per recording—Lead II (MLII) and a second lead (either V1, V2, V4, or V5)—making it difficult to develop lead-independent models. Even small electrode placement changes during testing can alter signal morphology enough to cause model failure.
 
----
+2. **Patient Variability** – ECG signals with the same arrhythmia label can differ substantially between individuals (see Figure 2). This inter-patient variability reduces robustness to unseen patients.
 
-## 🚀 How to Run
-
-1. **Download the MIT-BIH dataset** and place it either in your Google Drive or local machine.
-
-2. **Run the notebook:**  
-   [`ECG_on_Colab_Generating_Results.ipynb`](ECG_on_Colab_Generating_Results.ipynb)  
-   This notebook will:
-   - Process the ECG signals
-   - Apply dimensionality reduction
-   - Generate all the results used in the paper
-   - Save the output variables in a pickle file named `ECG2.pkl`
-
-   ⚠️ Note: Due to the stochastic nature of dimensionality reduction methods like UMAP and t-SNE, results may vary slightly in terms of cluster orientation or positioning.
+3. **Dataset Bias** – In MIT-BIH, more than **80%** of beats are normal, and most arrhythmic beats are premature ventricular contractions (PVCs). This imbalance leads many models to overfit common patterns while performing poorly on rare arrhythmias. Further, label standards differ between datasets, limiting cross-dataset transferability.
 
 ---
 
-## 📁 Precomputed Results
+## 💡 Our Approach
 
-All results used in the paper are available in this  
-[Google Drive folder](https://drive.google.com/drive/folders/1_-ElNT6jLkNbGXl9NJIfkdNNlEMBC6G-?usp=sharing).
+We address these challenges by combining **unsupervised dimensionality reduction** with **heartbeat-level analysis**:
+
+1. **Heartbeat Segmentation & Preprocessing** – Using our pipeline (Figure 1), we detect R-peaks, segment heartbeats, remove baseline wander, and filter noise.  
+2. **Per-Patient Analysis** – Instead of pooling data across patients, we apply **UMAP** or **t-SNE** to each patient's heartbeats individually, enabling clearer visualization of beat types without label supervision.  
+3. **Clustering & Visualization** – We cluster the low-dimensional embeddings (Figure 2) to reveal beat categories directly from morphology.  
+4. **Cross-Patient Comparison** – When heartbeats from multiple patients are mixed and embedded together, the beats naturally group by patient (Figure 3). This finding confirms that inter-patient differences are strong enough to create separable clusters without labels.
 
 ---
 
-## 📊 Visualization
+## 📷 Figures
 
-To visualize the generated results and reproduce the figures in the paper (along with additional plots), run:  
-[`ECG_on_CPU_visualzing_results.ipynb`](ECG_on_CPU_visualzing_results.ipynb)
+**Figure 1 – ECG preprocessing and dimensionality reduction pipeline**  
+![methods](methods.png)
+
+**Figure 2 – Dimensionality reduction and clustering for Recording 207**  
+![recording-207](207_all.png)
+
+**Figure 3 – Clustering showing patient-specific beat groupings in mixed datasets**  
+![segmentation](Segmentation.png)
