@@ -39,7 +39,7 @@ After detecting R-peaks, we segment each heartbeat using a **constant division r
 
 This method (Figure 3) avoids contamination from overlapping beats, even when heart rates vary. All beats are then resampled to 256 points for consistency, and baseline wandering is removed by subtracting a median-filtered version of the waveform (kernel size = 127).
 ![segmentation](Figures/Segmentation.png)
-**Figure 3** – ECG Heartbeat Segmentation Method. Three examples from different recordings are shown, including normal beats, premature ventricular contractions (PVCs), and premature atrial contractions (PACs), demonstrating that our segmentation performs well under different arrhythmic conditions.
+**Figure 3** – ECG Heartbeat Segmentation Method. Three examples from different recordings are shown, including normal beats (label N), premature ventricular contractions (label V), and premature atrial contractions (label A), demonstrating that our segmentation performs well under different arrhythmic conditions.
 
 
 ### 2. Dimensionality Reduction per Patient
