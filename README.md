@@ -65,12 +65,12 @@ To address these limitations, we propose an **image-based segmentation approach*
 
 ## 📊 Results
 
-We've shown results of applying our techniques on Recording 207 of the MIT-BIH dataset, as illustrated in Figure 6. Applying UMAP on the modified limb lead II creates 6 separate clusters in 2D, where both signal labels and morphologies are distinct. Results for three more patients are included in our [paper](https://arxiv.org/abs/2506.16494).  
+We've shown results of applying our techniques on Recording 207 of the MIT-BIH dataset, as illustrated in Figure 6. Applying UMAP on the modified limb lead II creates 6 separate clusters in 2D. The signals associated with each cluster not only have distinct morphologies but, more importantly, are labeled differently by medical doctors. Results for three more patients are included in our [paper](https://arxiv.org/abs/2506.16494).  
 
 ![recording-207](Figures/207_all.png)  
 **Figure 6 – Dimensionality reduction and clustering for Recording 207**
 
-We also applied the same technique on a dataset composed of all heartbeats from different people. Interestingly, it produces many separate clusters belonging to specific individuals, showing that ECG signals from different people may be distinct, confirming our observations in Figure 2. When mixing beats from multiple patients, the embeddings naturally cluster by patient. This highlights the strong inter-patient variability, even without labels.  
+We applied the same technique to a dataset combining heartbeats from multiple individuals. Interestingly, it produces distinct clusters, each corresponding to a specific person, confirming our observations in Figure 2 and highlighting strong inter-patient variability.
 
 ![recording-207](Figures/DR_6x4_plot.jpg)  
 **Figure 8 – Dimensionality reduction on mixed population**
