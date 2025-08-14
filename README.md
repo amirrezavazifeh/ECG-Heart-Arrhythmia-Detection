@@ -72,7 +72,7 @@ To address these limitations, we propose an **image-based segmentation approach*
 When mixing beats from multiple patients, the embeddings naturally cluster by patient. This highlights how strong inter-patient variability is—even without labels.
 
 ![recording-207](Figures/DR_6x4_plot.jpg)
-**Figure 6 – Dimensionality reduction on mixed population**  
+**Figure 7 – Dimensionality reduction on mixed population**  
 
 ---
 
