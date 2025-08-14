@@ -79,7 +79,7 @@ When mixing beats from multiple patients, the embeddings naturally cluster by pa
 
 ## 🚀 How to Run
 
-### 📂 Dataset
+### Dataset
 
 The dataset used is the [MIT-BIH Arrhythmia Database](https://www.physionet.org/content/mitdb/1.0.0/).
 
