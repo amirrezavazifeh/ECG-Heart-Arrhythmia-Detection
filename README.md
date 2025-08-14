@@ -85,7 +85,7 @@ The dataset used is the [MIT-BIH Arrhythmia Database](https://www.physionet.org/
 
 ### Personalized Analysis
 To produce results for each person, run:
-[Personalized_Arrhythmia_Detection.ipynb](codes/Personalized_Arrhythmia_Detection.ipynb)  
+[Personalized_Arrhythmia_Detection.ipynb](Codes/Personalized_Arrhythmia_Detection.ipynb)  
 
 ### Population Study
 To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run:
