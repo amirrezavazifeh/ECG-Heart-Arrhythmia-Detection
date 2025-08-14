@@ -58,7 +58,7 @@ To address these limitations, we propose an **image-based segmentation approach*
 **Figure 4** – Overview of the steps in our clustering algorithm.
 
 ![methods](Figures/clustering.png)
-**Figure 5** – Example comparison of our clustering algorithm on a toy dataset.
+**Figure 5** – Example comparison of our clustering algorithm on toy datasets.
 
 
 ---
