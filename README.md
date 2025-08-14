@@ -73,7 +73,7 @@ We've shown results of applying our techniques on Recording 207 of the MIT-BIH d
 We applied the same technique to a dataset combining heartbeats from multiple individuals. Interestingly, it produces distinct clusters, each corresponding to a specific person, confirming our observations in Figure 2 and highlighting strong inter-patient variability.
 
 ![recording-207](Figures/DR_6x4_plot.jpg)  
-**Figure 8 – Dimensionality reduction on mixed population**
+**Figure 7** – Visualization of heartbeat signal populations from 40 recordings. Shown are the 2D latent spaces using PCA, t-SNE, and UMAP from the ML II lead (top set) and the V1 lead (bottom set). Column 1 shows projections without any labels. The subsequent columns show data labeled with (2) heart arrhythmia types according to the AAMI standard, (3) patient recording number, and (4) gender.
 
 
 ---
