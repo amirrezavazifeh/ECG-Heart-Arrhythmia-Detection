@@ -54,7 +54,7 @@ After projecting heartbeat signals into a 2D latent space using **UMAP** or **t-
 
 To address these limitations, we propose an **image-based segmentation approach**. In this method, the 2D scatter plot is treated as an image, where clusters appear as distinct visual regions. By adjusting image resolution, applying edge detection, and performing morphological operations, we segment the image into connected components that correspond directly to clusters. This approach eliminates manual parameter selection, offering a fully automated, intuitive, and flexible alternative to conventional clustering techniques.
 
-The steps of our algorithm are illustrated in Figure 4, and a comparison with other clustering algorithms on toy datasets is shown in Figure 5.
+The steps of our algorithm are illustrated in Figure 4, and a comparison with other clustering algorithms on toy datasets is shown in Figure 6.
 
 ![methods](Figures/clustering_sample.png) 
 **Figure 4** – Overview of the steps in our clustering algorithm.
@@ -69,12 +69,12 @@ The steps of our algorithm are illustrated in Figure 4, and a comparison with ot
 
 
 ![recording-207](Figures/207_all.png)
-**Figure 4 – Dimensionality reduction and clustering for Recording 207** 
+**Figure 6 – Dimensionality reduction and clustering for Recording 207** 
 
 When mixing beats from multiple patients, the embeddings naturally cluster by patient. This highlights how strong inter-patient variability is—even without labels.
 
 ![recording-207](Figures/DR_6x4_plot.jpg)
-**Figure 5 – Dimensionality reduction on mixed population**  
+**Figure 6 – Dimensionality reduction on mixed population**  
 
 ---
 
