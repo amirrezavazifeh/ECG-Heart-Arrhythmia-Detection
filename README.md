@@ -84,22 +84,18 @@ When mixing beats from multiple patients, the embeddings naturally cluster by pa
 The dataset used is the [MIT-BIH Arrhythmia Database](https://www.physionet.org/content/mitdb/1.0.0/).
 
 ### Personalized Analysis
-To produce results for each person, run:
-[Personalized_Arrhythmia_Detection.ipynb](Codes/Personalized_Arrhythmia_Detection.ipynb)  
+To produce results for each person, run: [Personalized_Arrhythmia_Detection.ipynb](Codes/Personalized_Arrhythmia_Detection.ipynb)  
 
 ### Population Study
-To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run:
-[Population_Analysis.ipynb](Codes/Population_Analysis.ipynb)  
+To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run: [Population_Analysis.ipynb](Codes/Population_Analysis.ipynb)  
 
 ⚠️ Note: Due to the stochastic nature of dimensionality reduction methods like UMAP and t-SNE, results may vary slightly in terms of cluster orientation or positioning.
 
 ### ECG Segmentation Playground
-To experiment with ECG signal segmentation, run:
-[ECG_Segmentation.ipynb](Codes/ECG_Segmentation.ipynb)  
+To experiment with ECG signal segmentation, run: [ECG_Segmentation.ipynb](Codes/ECG_Segmentation.ipynb)  
 
 ### Clustering
-To generate results of our clustering algorithm on toy datasets, run:  
-[Clustering Algorithms.ipynb](Codes/Clustering%20Algorithms.ipynb)
+To generate results of our clustering algorithm on toy datasets, run: [Clustering Algorithms.ipynb](Codes/Clustering%20Algorithms.ipynb)
 
 ---
 
