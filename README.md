@@ -52,7 +52,7 @@ These methods embed high-dimensional data into a low-dimensional space while pre
 
 After projecting heartbeat signals into a 2D latent space using **UMAP** or **t-SNE**, clustering is required to separate distinct groups. Manual clustering in the latent space is slow and non-automated. Traditional algorithms, like k-means, require prior knowledge of the number of clusters, limiting flexibility. DBSCAN, a density-based algorithm, does not need the cluster count but requires careful hyperparameter tuning for optimal results.
 
-To address these limitations, we propose an **image-based segmentation approach**. In this method, the 2D scatter plot is treated as an image, where clusters appear as distinct visual regions. By adjusting image resolution, applying edge detection, and performing morphological operations, we segment the image into connected components that correspond directly to clusters. This approach eliminates manual parameter selection, offering a fully automated, intuitive, and flexible alternative to conventional clustering techniques.
+To address these limitations, we propose an **image-based segmentation approach**. In this method, the 2D scatter plot is treated as an image, where clusters appear as distinct visual regions. By adjusting image resolution, applying edge detection, and performing morphological operations, we segment the image into connected components that correspond directly to clusters.
 
 The steps of our algorithm are illustrated in Figure 4, and a comparison with other clustering algorithms on toy datasets is shown in Figure 6.
 
