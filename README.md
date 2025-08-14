@@ -82,8 +82,7 @@ When mixing beats from multiple patients, the embeddings naturally cluster by pa
 
 ### 📂 Dataset
 
-The dataset used is the [MIT-BIH Arrhythmia Database](https://www.physionet.org/content/mitdb/1.0.0/).  
-Please download it from the link above.
+The dataset used is the [MIT-BIH Arrhythmia Database](https://www.physionet.org/content/mitdb/1.0.0/).
 
 ### Personalized Analysis
 To produce results for each person, run:
@@ -92,7 +91,7 @@ This notebook will:
 - Process the ECG signals and segment heartbeats
 - Apply dimensionality reduction
 - Generate all the results used in the paper
-
+  
 ⚠️ Note: Due to the stochastic nature of dimensionality reduction methods like UMAP and t-SNE, results may vary slightly in terms of cluster orientation or positioning.
 
 ### Population Study
