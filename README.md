@@ -99,7 +99,7 @@ To experiment with ECG signal segmentation, run:
 
 ### Clustering
 To generate results of our clustering algorithm on toy datasets, run:  
-[Clustering Algorithms.ipynb](Codes/Clustering Algorithms.ipynb)
+[Clustering Algorithms.ipynb](Codes/Clustering%20Algorithms.ipynb)
 
 ---
 
