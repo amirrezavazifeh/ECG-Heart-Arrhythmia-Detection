@@ -95,28 +95,17 @@ This notebook will:
 
 ⚠️ Note: Due to the stochastic nature of dimensionality reduction methods like UMAP and t-SNE, results may vary slightly in terms of cluster orientation or positioning.
 
----
-
 ### Population Study
 To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run:
 [Population_Analysis.ipynb](Codes/Population_Analysis.ipynb)  
-
-
----
 
 ### ECG Segmentation Playground
 To experiment with ECG signal segmentation, run:
 [ECG_Segmentation.ipynb](Codes/ECG_Segmentation.ipynb)  
 
----
-
 ### Clustering
 To experiment with ECG signal segmentation, run:
 [Clustering Algorithms.ipynb](Codes/Clustering Algorithms.ipynb)  
-
-
-
----
 
 ---
 
