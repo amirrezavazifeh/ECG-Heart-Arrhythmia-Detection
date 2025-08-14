@@ -68,7 +68,7 @@ To address these limitations, we propose an **image-based segmentation approach*
 We've shown results of applying our techniques on Recording 207 of the MIT-BIH dataset, as illustrated in Figure 6. Applying UMAP on the modified limb lead II creates 6 separate clusters in 2D. The signals associated with each cluster not only have distinct morphologies but, more importantly, are labeled differently by medical doctors. Results for three more patients are included in our [paper](https://arxiv.org/abs/2506.16494).  
 
 ![recording-207](Figures/207_all.png)  
-**Figure 6 – Dimensionality reduction and clustering for Recording 207**
+**Figure 6** –Analysis of Recording 207 with dimensionality reduction methods. Top: 2D visualizations using PCA, t-SNE, and UMAP. A KNN classifier ($k=5$) is used on the UMAP embeddings to evaluate classification performance.  Bottom: Clustering of 2D UMAP embeddings from the MLII lead, followed by labeling of heartbeat types. Ten example signals per cluster are shown, along with their mean and variance. For all AAMI labels, refer to the topmost legend for character definitions.
 
 We applied the same technique to a dataset combining heartbeats from multiple individuals. Interestingly, it produces distinct clusters, each corresponding to a specific person, confirming our observations in Figure 2 and highlighting strong inter-patient variability.
 
