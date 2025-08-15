@@ -50,30 +50,32 @@ These methods embed high-dimensional data into a low-dimensional space while pre
 
 ### 3. Clustering
 
-After projecting heartbeat signals into a 2D latent space using **UMAP** or **t-SNE**, clustering is required to separate distinct groups. Manual clustering in the latent space is slow and non-automated. Traditional algorithms, like k-means, require prior knowledge of the number of clusters, limiting flexibility. DBSCAN, a density-based algorithm, does not need the cluster count but requires careful hyperparameter tuning for optimal results.
+After projecting heartbeat signals into a 2D latent space using **UMAP** or **t-SNE**, clustering is required to identify distinct groups. Manual clustering in the latent space is slow and non-automated. Traditional algorithms, such as k-means, require prior knowledge of the number of clusters, which limits flexibility. DBSCAN, a density-based method, does not require specifying the cluster count but demands careful hyperparameter tuning for optimal results.
 
-To address these limitations, we propose an **image-based segmentation approach**. In this method, the 2D scatter plot is treated as an image, where clusters appear as distinct visual regions. By adjusting image resolution, applying edge detection, and performing morphological operations, we segment the image into connected components that correspond directly to clusters. The steps of our algorithm are illustrated in Figure 4, and a comparison with other clustering algorithms on toy datasets is shown in Figure 5.
+To overcome these limitations, we propose an **image-based segmentation approach**. In this method, the 2D scatter plot is treated as an image, where clusters appear as visually distinct regions. By setting image resolution as a hyperparameter, applying edge detection, and performing morphological operations, we segment the image into connected components that correspond directly to clusters. The steps of our algorithm are illustrated in Figure 4. A comparison with other clustering algorithms applied to UMAP projections of ECG data and toy datasets is shown in Figures 5 and 6.
 
-![methods](Figures/clustering_sample.png) 
+![Clustering Steps](Figures/clustering_sample.png)  
 **Figure 4** – Overview of the steps in our clustering algorithm.
 
-![methods](Figures/clustering.png)
-**Figure 5** – Example comparison of our clustering algorithm on toy datasets.
+![UMAP Comparison](Figures/clustering_UMAP.jpg)  
+**Figure 5** – Example comparison of our clustering algorithm on UMAP projections of MLII for 4 recordings.
 
+![Toy Dataset Comparison](Figures/clustering.png)  
+**Figure 6** – Example comparison of our clustering algorithm on toy datasets.
 
 ---
 
 ## 📊 Results
 
-We've shown results of applying our techniques on Recording 207 of the MIT-BIH dataset, as illustrated in Figure 6. Applying UMAP on the modified limb lead II creates 6 separate clusters in 2D. The signals associated with each cluster not only have distinct morphologies but, more importantly, are labeled differently by medical doctors. Results for three more patients are included in our [paper](https://arxiv.org/abs/2506.16494).  
+We've shown results of applying our techniques on Recording 207 of the MIT-BIH dataset, as illustrated in Figure 7. Applying UMAP on the modified limb lead II creates 6 separate clusters in 2D. The signals associated with each cluster not only have distinct morphologies but, more importantly, are labeled differently by medical doctors. Results for three more patients are included in our [paper](https://arxiv.org/abs/2506.16494).  
 
-We applied the same technique to a dataset containing heartbeats from multiple individuals. Interestingly, as shown in Figure 7, it produces distinct clusters, each corresponding to a specific person, confirming our observations in Figure 2 and highlighting strong inter-patient variability.
+We applied the same technique to a dataset containing heartbeats from multiple individuals. Interestingly, as shown in Figure 8, it produces distinct clusters, each corresponding to a specific person, confirming our observations in Figure 2 and highlighting strong inter-patient variability.
 
 ![recording-207](Figures/207_all.png)  
-**Figure 6** –Analysis of Recording 207 with dimensionality reduction methods. Top: 2D visualizations using PCA, t-SNE, and UMAP. A KNN classifier ($k=5$) is used on the UMAP embeddings to evaluate classification performance.  Bottom: Clustering of 2D UMAP embeddings from the MLII lead, followed by labeling of heartbeat types. Ten example signals per cluster are shown, along with their mean and variance. For all AAMI labels, refer to the topmost legend for character definitions.
+**Figure 7** –Analysis of Recording 207 with dimensionality reduction methods. Top: 2D visualizations using PCA, t-SNE, and UMAP. A KNN classifier ($k=5$) is used on the UMAP embeddings to evaluate classification performance.  Bottom: Clustering of 2D UMAP embeddings from the MLII lead, followed by labeling of heartbeat types. Ten example signals per cluster are shown, along with their mean and variance. For all AAMI labels, refer to the topmost legend for character definitions.
 
 ![recording-207](Figures/DR_6x4_plot.jpg)  
-**Figure 7** – Visualization of heartbeat signal populations from 40 recordings. Shown are the 2D latent spaces using PCA, t-SNE, and UMAP from the ML II lead (top set) and the V1 lead (bottom set). Column 1 shows projections without any labels. The subsequent columns show data labeled with (2) heart arrhythmia types according to the AAMI standard, (3) patient recording number, and (4) gender.
+**Figure 8** – Visualization of heartbeat signal populations from 40 recordings. Shown are the 2D latent spaces using PCA, t-SNE, and UMAP from the ML II lead (top set) and the V1 lead (bottom set). Column 1 shows projections without any labels. The subsequent columns show data labeled with (2) heart arrhythmia types according to the AAMI standard, (3) patient recording number, and (4) gender.
 
 
 ---
