@@ -103,6 +103,13 @@ To generate results of our clustering algorithm on toy datasets, run: [Clusterin
 
 ---
 
+## 📁 Precomputed Results
+
+All results used in the paper are available in this  
+[Google Drive folder](https://drive.google.com/drive/folders/1_-ElNT6jLkNbGXl9NJIfkdNNlEMBC6G-?usp=sharing).
+
+---
+
 ## 📜 Citation
 
 If you found this repository useful, please consider citing our paper:
