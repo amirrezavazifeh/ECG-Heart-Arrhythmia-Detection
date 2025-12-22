@@ -2,7 +2,7 @@
 
 ---
 
-## 🩺 Problem Statement
+## Problem Statement
 
 Cardiac arrhythmia, a condition that disrupts the heart’s normal rhythm and alters the ECG signal, poses a serious health risk. Detecting arrhythmias requires accurate analysis of heartbeat patterns, yet most existing methods rely on supervised learning, which requires large, labeled datasets. This approach faces three main challenges:
 
@@ -19,7 +19,7 @@ Cardiac arrhythmia, a condition that disrupts the heart’s normal rhythm and al
 
 ---
 
-## 💡 Our Approach
+## Our Approach
 We address these challenges by combining **unsupervised non-linear dimensionality reduction** with **heartbeat-level analysis**. The approach has three stages:
 
 1. **Segmentation and Preprocessing:** Segment individual heartbeats from raw ECG.  
@@ -65,7 +65,7 @@ To overcome these limitations, we propose an **image-based segmentation approach
 
 ---
 
-## 📊 Results
+## Results
 
 We've shown results of applying our techniques on Recording 207 of the MIT-BIH dataset, as illustrated in Figure 7. Applying UMAP on the modified limb lead II creates 6 separate clusters in 2D. The signals associated with each cluster not only have distinct morphologies but, more importantly, are labeled differently by medical doctors. Results for three more patients are included in our [paper](https://arxiv.org/abs/2506.16494).  
 
@@ -81,7 +81,7 @@ We applied the same technique to a dataset containing heartbeats from multiple i
 ---
 
 
-## 🚀 How to Run
+## How to Run
 
 ### Dataset
 
@@ -93,7 +93,7 @@ To produce results for each person, run: [Personalized_Arrhythmia_Detection.ipyn
 ### Population Study
 To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run: [Population_Analysis.ipynb](Codes/Population_Analysis.ipynb)  
 
-⚠️ Note: Due to the stochastic nature of dimensionality reduction methods like UMAP and t-SNE, results may vary slightly in terms of cluster orientation or positioning.
+Note: Due to the stochastic nature of dimensionality reduction methods like UMAP and t-SNE, results may vary slightly in terms of cluster orientation or positioning.
 
 ### ECG Segmentation Playground
 To experiment with ECG signal segmentation, run: [ECG_Segmentation.ipynb](Codes/ECG_Segmentation.ipynb)  
@@ -103,14 +103,14 @@ To generate results of our clustering algorithm on toy datasets, run: [Clusterin
 
 ---
 
-## 📁 Precomputed Results
+## Precomputed Results
 
 All results used in the paper are available in this  
 [Google Drive folder](https://drive.google.com/drive/folders/1_-ElNT6jLkNbGXl9NJIfkdNNlEMBC6G-?usp=sharing).
 
 ---
 
-## 📜 Citation
+## Citation
 
 If you found this repository useful, please consider citing our paper:
 
