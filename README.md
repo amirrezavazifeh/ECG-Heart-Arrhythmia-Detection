@@ -5,15 +5,15 @@
   <a href="https://arxiv.org/abs/2506.16494">
     <img src="https://img.shields.io/badge/arXiv-Preprint-B31B1B?style=flat-square" alt="arXiv Preprint">
   </a>
-</p>
+<p>
 <br>
 <p>
   <a href="#">Amir Reza Vazifeh</a><sup>1</sup> &nbsp;·&nbsp;
   <a href="#">Jason W. Fleischer</a><sup>1</sup>
-</p>
+<p>
 <p>
   <sup>1</sup> Department of Electrical and Computer Engineering, Princeton University
-</p>
+<p>
 <p><em>Preprint</em>, 2025</p>
 <br>
 
