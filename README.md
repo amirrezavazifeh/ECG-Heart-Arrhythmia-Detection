@@ -95,16 +95,14 @@ We applied the same technique to a dataset containing heartbeats from multiple i
 ## How to Run
 
 ### Dataset
-
-The dataset used is the [MIT-BIH Arrhythmia Database](https://www.physionet.org/content/mitdb/1.0.0/).
+The dataset used are the [MIT-BIH Arrhythmia Database](https://www.physionet.org/content/mitdb/1.0.0/) and [MIT-BIH Normal Sinus Rhythm Database
+]([https://www.physionet.org/content/mitdb/1.0.0/](https://www.physionet.org/content/nsrdb/1.0.0/)) .
 
 ### Personalized Analysis
 To produce results for each person, run: [Personalized_Arrhythmia_Detection.ipynb](Codes/Personalized_Arrhythmia_Detection.ipynb)  
 
 ### Population Study
 To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run: [Population_Analysis.ipynb](Codes/Population_Analysis.ipynb)  
-
-Note: Due to the stochastic nature of dimensionality reduction methods like UMAP and t-SNE, results may vary slightly in terms of cluster orientation or positioning.
 
 ### ECG Segmentation Playground
 To experiment with ECG signal segmentation, run: [ECG_Segmentation.ipynb](Codes/ECG_Segmentation.ipynb)  
