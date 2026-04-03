@@ -93,7 +93,7 @@ We applied the same technique to a dataset containing heartbeats from multiple i
 
 ### Dataset
 The dataset used are the [MIT-BIH Arrhythmia Database](https://www.physionet.org/content/mitdb/1.0.0/) and [MIT-BIH Normal Sinus Rhythm Database
-]([https://www.physionet.org/content/mitdb/1.0.0/](https://www.physionet.org/content/nsrdb/1.0.0/)) .
+](https://www.physionet.org/content/mitdb/1.0.0/).
 
 ### Personalized Analysis
 To produce results for each person, run: [Personalized_Arrhythmia_Detection.ipynb](Code/Personalized_Arrhythmia_Detection.ipynb)  
