@@ -23,7 +23,7 @@
 
 Cardiac arrhythmia, which disrupts the heart’s normal rhythm and alters ECG signals, poses a serious health risk. Most existing detection methods rely on supervised learning, which requires large labeled datasets but faces three major challenges:
 
-1. **Lead Variability** – A standard 12-lead ECG records twelve distinct waveforms at each time point. Models trained for one lead do not directly generalize to another. Even small electrode placement changes during testing can alter signal morphology enough to cause supervised model failure. In addition, many publicly available datasets, such as MIT-BIH Arrhythmia Database, contain only two leads per recording—Lead II (MLII) and another lead (either V1, V2, V4, or V5)—making it difficult to develop lead-independent models. 
+1. **Lead Variability** – A standard 12-lead ECG records twelve distinct waveforms. Models trained for one lead do not directly generalize to another. Even small electrode placement changes during testing can alter signal morphology enough to cause supervised model failure. In addition, many publicly available datasets, such as MIT-BIH Arrhythmia Database, contain a limited stes of leads, making it difficult to develop lead-independent models. 
 
 2. **Patient Variability** – ECG signals with the same arrhythmia label can differ substantially between individuals. This inter-patient variability reduces robustness to unseen patients.
 
@@ -34,7 +34,7 @@ Cardiac arrhythmia, which disrupts the heart’s normal rhythm and alters ECG si
 
 ---
 
-## Our Approach
+## Method
 We address these challenges by combining **unsupervised non-linear dimensionality reduction** with **heartbeat-level analysis**. The approach has three stages:
 
 1. **Segmentation and Preprocessing:** Segment individual heartbeats from raw ECG.  
