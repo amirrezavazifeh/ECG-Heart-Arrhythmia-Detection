@@ -6,7 +6,7 @@
 
 <p>
   <a href="https://github.com/amirrezavazifeh">Amir Reza Vazifeh</a><sup>1</sup> &nbsp;·&nbsp;
-  <a href="https://ece.princeton.edu/people/jason-w-fleischer">Jason W. Fleischer</a><sup>1</sup>
+  <a href="https://ece.princeton.edu/people/jason-w-fleischer">Jason W. Fleischer</a><sup>1,*</sup>
 </p>
 
 <sup>1</sup> Department of Electrical and Computer Engineering, Princeton University
