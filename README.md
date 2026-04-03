@@ -56,19 +56,15 @@ This method (Figure 3) avoids contamination from overlapping beats, even when he
 ![segmentation](Figures/Segmentation.png)
 **Figure 3** – ECG Heartbeat Segmentation Method. Three examples from different recordings are shown, including normal beats (label N), premature ventricular contractions (label V), and premature atrial contractions (label A), demonstrating that our segmentation performs well under different arrhythmic conditions.
 
-### 2. Dimensionality Reduction per Patient
+### 2. Dimensionality Reduction:
 
-The high-dimensional heartbeat signals from each patient are projected into two dimensions using **non-linear dimensionality reduction** techniques, such as [t-distributed Stochastic Neighbor Embedding (t-SNE)](https://www.jmlr.org/papers/v9/vandermaaten08a.html) or [Uniform Manifold Approximation and Projection (UMAP)](https://arxiv.org/abs/1802.03426).
-These methods embed high-dimensional data into a low-dimensional space while preserving as much of the original **graph structure** as possible: points that are close in the original space remain close in the embedding, and distant points are placed far apart. Compared to t-SNE, UMAP is faster, better preserves global structure, and scales more efficiently to large datasets. This enables clearer visualization and unsupervised clustering of distinct heartbeat types.
+The high-dimensional heartbeat signals from each patient are projected into two dimensions using **non-linear dimensionality reduction** techniques, such as [t-distributed Stochastic Neighbor Embedding (t-SNE)](https://www.jmlr.org/papers/v9/vandermaaten08a.html) or [Uniform Manifold Approximation and Projection (UMAP)](https://arxiv.org/abs/1802.03426). These methods embed high-dimensional data into a low-dimensional space while preserving as much of the original **graph structure** as possible: points that are close in the original space remain close in the embedding, and distant points are placed far apart. Compared to t-SNE, UMAP is faster, better preserves global structure, and scales more efficiently to large datasets. This enables clearer visualization and unsupervised clustering of distinct heartbeat types.
 
 ### 3. Clustering
 
 After projecting heartbeat signals into a 2D latent space using **UMAP** or **t-SNE**, clustering is required to identify distinct groups. Manual clustering in the latent space is slow and non-automated. Traditional algorithms, such as k-means, require prior knowledge of the number of clusters, which limits flexibility. DBSCAN, a density-based method, does not require specifying the cluster count but demands careful hyperparameter tuning for optimal results.
 
-To overcome these limitations, we propose an **image-based segmentation approach**. In this method, the 2D scatter plot is treated as an image, where clusters appear as visually distinct regions. By setting image resolution as a hyperparameter, applying edge detection, and performing morphological operations, we segment the image into connected components that correspond directly to clusters. The steps of our algorithm are illustrated in Figure 4. A comparison with other clustering algorithms applied to UMAP projections of ECG data and toy datasets is shown in Figures 5 and 6.
-
-![Clustering Steps](Figures/clustering_sample.png)  
-**Figure 4** – Overview of the steps in our clustering algorithm.
+To overcome these limitations, we propose an **image-based segmentation approach**. In this method, the 2D scatter plot is treated as an image, where clusters appear as visually distinct regions. By setting image resolution as a hyperparameter, applying edge detection, and performing morphological operations, we segment the image into connected components that correspond directly to clusters. A comparison with other clustering algorithms applied to UMAP projections of ECG data and toy datasets is shown in Figures 5 and 6.
 
 ![UMAP Comparison](Figures/clustering_UMAP.jpg)  
 **Figure 5** – Example comparison of our clustering algorithm on UMAP projections of MLII for 4 recordings.
@@ -82,7 +78,7 @@ To overcome these limitations, we propose an **image-based segmentation approach
 
 We've shown results of applying our techniques on Recording 207 of the MIT-BIH dataset, as illustrated in Figure 7. Applying UMAP on the modified limb lead II creates 6 separate clusters in 2D. The signals associated with each cluster not only have distinct morphologies but, more importantly, are labeled differently by medical doctors. Results for three more patients are included in our [paper](https://arxiv.org/abs/2506.16494).  
 
-We applied the same technique to a dataset containing heartbeats from multiple individuals. Interestingly, as shown in Figure 8, it produces distinct clusters, each corresponding to a specific person, confirming our observations in Figure 2 and highlighting strong inter-patient variability.
+We applied the same technique to a dataset containing heartbeats from multiple individuals. Interestingly, as shown in Figure 8 and 9, it produces distinct clusters, each corresponding to a specific person, confirming our observations in Figure 2 and highlighting strong inter-patient variability.
 
 ![recording-207](Figures/207_all.png)  
 **Figure 7** –Analysis of Recording 207 with dimensionality reduction methods. Top: 2D visualizations using PCA, t-SNE, and UMAP. A KNN classifier ($k=5$) is used on the UMAP embeddings to evaluate classification performance.  Bottom: Clustering of 2D UMAP embeddings from the MLII lead, followed by labeling of heartbeat types. Ten example signals per cluster are shown, along with their mean and variance. For all AAMI labels, refer to the topmost legend for character definitions.
