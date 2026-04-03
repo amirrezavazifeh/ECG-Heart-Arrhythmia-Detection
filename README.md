@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1>Manifold Learning for Personalized and Label-free Heart Arrhythmia Detection</h1>
+<h1>Manifold Learning for Personalized and Label-free<br>Heart Arrhythmia Detection</h1>
 
 <a href="https://arxiv.org/abs/2506.16494"><img src="https://img.shields.io/badge/arXiv-Preprint-B31B1B?style=flat-square" alt="arXiv Preprint"></a>
 
