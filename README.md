@@ -46,7 +46,7 @@ We address these challenges by combining **unsupervised non-linear dimensionalit
 
 ### 1. Heartbeat Segmentation & Preprocessing
 
-The first step in real-world analysis is to segment the ECG signals into isolated heartbeats. This requires detecting **R-peaks** from the raw signal. Although many algorithms exist for R-peak detection—such as [Christov](https://biomedical-engineering-online.biomedcentral.com/articles/10.1186/1475-925X-3-28), [Pan–Tompkins](https://ieeexplore.ieee.org/document/4122029), and [NeuroKit2](https://link.springer.com/article/10.3758/s13428-020-01516-y)—a [recent study of ours](https://ieeexplore.ieee.org/document/9745967) found NeuroKit2 to be the most accurate. Since MIT-BIH already provides annotated R-peak locations, we use these directly.
+The first step in real-world analysis is to segment the ECG signals into isolated heartbeats. This requires detecting **R-peaks** from the raw signal. Although many algorithms exist for R-peak detection such as [Christov](https://biomedical-engineering-online.biomedcentral.com/articles/10.1186/1475-925X-3-28), [Pan–Tompkins](https://ieeexplore.ieee.org/document/4122029), and [NeuroKit2](https://link.springer.com/article/10.3758/s13428-020-01516-y), a [recent study of ours](https://ieeexplore.ieee.org/document/9745967) found NeuroKit2 to be the most accurate. 
 
 After detecting R-peaks, we segment each heartbeat using a **constant division ratio** between consecutive beats:  
 - The first two-thirds of the upcoming RR interval  
@@ -56,12 +56,10 @@ This method (Figure 3) avoids contamination from overlapping beats, even when he
 ![segmentation](Figures/Segmentation.png)
 **Figure 3** – ECG Heartbeat Segmentation Method. Three examples from different recordings are shown, including normal beats (label N), premature ventricular contractions (label V), and premature atrial contractions (label A), demonstrating that our segmentation performs well under different arrhythmic conditions.
 
-
 ### 2. Dimensionality Reduction per Patient
 
 The high-dimensional heartbeat signals from each patient are projected into two dimensions using **non-linear dimensionality reduction** techniques, such as [t-distributed Stochastic Neighbor Embedding (t-SNE)](https://www.jmlr.org/papers/v9/vandermaaten08a.html) or [Uniform Manifold Approximation and Projection (UMAP)](https://arxiv.org/abs/1802.03426).
 These methods embed high-dimensional data into a low-dimensional space while preserving as much of the original **graph structure** as possible: points that are close in the original space remain close in the embedding, and distant points are placed far apart. Compared to t-SNE, UMAP is faster, better preserves global structure, and scales more efficiently to large datasets. This enables clearer visualization and unsupervised clustering of distinct heartbeat types.
-
 
 ### 3. Clustering
 
