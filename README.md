@@ -96,16 +96,16 @@ The dataset used are the [MIT-BIH Arrhythmia Database](https://www.physionet.org
 ]([https://www.physionet.org/content/mitdb/1.0.0/](https://www.physionet.org/content/nsrdb/1.0.0/)) .
 
 ### Personalized Analysis
-To produce results for each person, run: [Personalized_Arrhythmia_Detection.ipynb](Codes/Personalized_Arrhythmia_Detection.ipynb)  
+To produce results for each person, run: [Personalized_Arrhythmia_Detection.ipynb](Code/Personalized_Arrhythmia_Detection.ipynb)  
 
 ### Population Study
-To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run: [Population_Analysis.ipynb](Codes/Population_Analysis.ipynb)  
+To perform **population-level analysis** (applying dimensionality reduction on all heartbeats from different people), run: [Population_Analysis.ipynb](Code/Population_Analysis.ipynb)  
 
 ### ECG Segmentation Playground
-To experiment with ECG signal segmentation, run: [ECG_Segmentation.ipynb](Codes/ECG_Segmentation.ipynb)  
+To experiment with ECG signal segmentation, run: [ECG_Segmentation.ipynb](Code/ECG_Segmentation.ipynb)  
 
 ### Clustering
-To generate results of our clustering algorithm on toy datasets, run: [Clustering Algorithms.ipynb](Codes/Clustering%20Algorithms.ipynb)
+To generate results of our clustering algorithm on toy datasets, run: [Clustering Algorithms.ipynb](Code/Clustering%20Algorithms.ipynb)
 
 ---
 
