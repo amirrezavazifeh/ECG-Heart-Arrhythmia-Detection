@@ -4,7 +4,7 @@
 
 <p>
   <a href="https://arxiv.org/abs/2506.16494">
-    <img src="https://img.shields.io/badge/📄_arXiv_Preprint-B31B1B?style=for-the-badge&logoColor=white" alt="arXiv Preprint">
+    <img src="https://img.shields.io/badge/arXiv-Preprint-B31B1B?style=flat-square" alt="arXiv Preprint">
   </a>
 </p>
 
