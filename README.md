@@ -9,18 +9,14 @@
 </p>
 
 <br>
-
 <p>
   <a href="#">Amir Reza Vazifeh</a><sup>1</sup> &nbsp;·&nbsp;
   <a href="#">Jason W. Fleischer</a><sup>1</sup>
 </p>
-
 <p>
   <sup>1</sup> Department of Electrical and Computer Engineering, Princeton University
 </p>
-
 <p><em>Preprint</em>, 2025</p>
-
 <br>
 
 ---
