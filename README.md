@@ -19,20 +19,18 @@
 
 </div>
 
-## Problem Statement
+## Introduction
 
-Cardiac arrhythmia, a condition that disrupts the heart’s normal rhythm and alters the ECG signal, poses a serious health risk. Detecting arrhythmias requires accurate analysis of heartbeat patterns, yet most existing methods rely on supervised learning, which requires large, labeled datasets. This approach faces three main challenges:
+Cardiac arrhythmia, which disrupts the heart’s normal rhythm and alters ECG signals, poses a serious health risk. Most existing detection methods rely on supervised learning, which requires large labeled datasets but faces three major challenges:
 
-1. **Lead Variability** – A standard 12-lead ECG records twelve distinct waveforms at each time point. Models trained for one lead do not directly generalize to another. Many publicly available datasets, such as MIT-BIH Arrhythmia Database, contain only two leads per recording—Lead II (MLII) and another lead (either V1, V2, V4, or V5)—making it difficult to develop lead-independent models. Even small electrode placement changes during testing can alter signal morphology enough to cause supervised model failure.
+1. **Lead Variability** – A standard 12-lead ECG records twelve distinct waveforms at each time point. Models trained for one lead do not directly generalize to another. Even small electrode placement changes during testing can alter signal morphology enough to cause supervised model failure. In addition, many publicly available datasets, such as MIT-BIH Arrhythmia Database, contain only two leads per recording—Lead II (MLII) and another lead (either V1, V2, V4, or V5)—making it difficult to develop lead-independent models. 
 
 2. **Patient Variability** – ECG signals with the same arrhythmia label can differ substantially between individuals. This inter-patient variability reduces robustness to unseen patients.
 
 ![different_people_ecg_variability](Figures/different_people_MIT-BIH.png)
 **Figure 1** – ECG Variability Across People. Each subplot in a given row corresponds to the same arrhythmic label but comes from a different person. Top row: Normal beats (N), middle row: Premature ventricular contractions (V), bottom row: Atrial premature beats (A). All signals are recorded using the lead II of the MIT-BIH dataset.
 
-
-3. **Dataset Bias** – Training datasets often exhibit bias in both demographic representation and arrhythmia types. In the MIT-BIH dataset, over 80% of beats are normal, and most arrhythmic beats are premature ventricular contractions (PVCs). This imbalance causes many models to overfit common arrhythmias, such as PVCs, while underperforming on rare arrhythmias. Supervised learning is fundamentally limited to the labels provided in the training set and cannot generate labels outside of it. Additionally, different labeling standards for ECG signals limit cross-dataset generalization.
-
+3. **Dataset Bias** – Training datasets often exhibit bias in both demographic representation and arrhythmia types. In the MIT-BIH dataset, forexample, over 80% of beats are normal, and most arrhythmic beats are premature ventricular contractions (PVCs). This imbalance causes many models to overfit common arrhythmias, such as PVCs, while underperforming on rare arrhythmias. Supervised learning is fundamentally limited to the labels provided in the training set and cannot generate labels outside of it. Additionally, different labeling standards for ECG signals limit cross-dataset generalization.
 
 ---
 
