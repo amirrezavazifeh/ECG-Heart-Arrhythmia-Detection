@@ -87,10 +87,7 @@ We applied the same technique to a dataset containing heartbeats from multiple i
 ![population_NSRDB](Figures/Population_NSRDB.jpg)  
 **Figure 8** – Visualization of heartbeat signal populations from 24 recordings from NSR-DB. Shown are the 2D latent spaces using PCA, t-SNE, and UMAP from the first lead (ECG 1) and the second lead (ECG 2). Column 1 shows projections without any labels. The subsequent columns show data labeled with (2) heart arrhythmia types according to the AAMI standard, (3) patient recording number, and (4) gender.
 
-
-
 ---
-
 
 ## How to Run
 
@@ -120,8 +117,6 @@ All results used in the paper are available in this
 ---
 
 ## Citation
-
-If you found this repository useful, please consider citing our paper:
 
 ```bibtex
 @misc{vazifeh2025manifoldlearningpersonalizedlabelfree,
