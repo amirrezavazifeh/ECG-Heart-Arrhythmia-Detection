@@ -1,13 +1,11 @@
 <div align="center">
 
 <h1>Manifold Learning for Personalized and Label-free Heart Arrhythmia Detection</h1>
-
 <p>
   <a href="https://arxiv.org/abs/2506.16494">
     <img src="https://img.shields.io/badge/arXiv-Preprint-B31B1B?style=flat-square" alt="arXiv Preprint">
   </a>
 </p>
-
 <br>
 <p>
   <a href="#">Amir Reza Vazifeh</a><sup>1</sup> &nbsp;·&nbsp;
@@ -18,7 +16,6 @@
 </p>
 <p><em>Preprint</em>, 2025</p>
 <br>
-
 ---
 
 </div>
