@@ -41,7 +41,7 @@ We address these challenges by combining **unsupervised non-linear dimensionalit
 2. **Dimensionality Reduction:** Project heartbeats into 2D for visualization.  
 3. **Clustering:** Group similar heartbeats in 2D space.
 
-![methods](Figures/method.png)
+![methods](Figures/Method.png)
 **Figure 2** – Schematic of our approach.
 
 ### 1. Heartbeat Segmentation & Preprocessing
