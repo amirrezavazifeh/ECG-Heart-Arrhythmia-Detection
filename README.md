@@ -2,7 +2,7 @@
 
 <h1>Manifold Learning for Personalized and Label-free<br>Heart Arrhythmia Detection</h1>
 
-<a href="https://arxiv.org/abs/2506.16494"><img src="https://img.shields.io/badge/arXiv-Preprint-B31B1B?style=flat-square" alt="arXiv Preprint"></a>
+<a href="https://arxiv.org/abs/2506.16494"><img src="https://img.shields.io/badge/arXiv-Preprint-B31B1B?style=flat-square" alt="Informatics in Medicine Unlocked Journal"></a>
 
 <p>
   <a href="https://github.com/amirrezavazifeh">Amir Reza Vazifeh</a><sup>1</sup> &nbsp;·&nbsp;
