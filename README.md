@@ -2,7 +2,7 @@
 
 <h1>Manifold Learning for Personalized and Label-free<br>Heart Arrhythmia Detection</h1>
 
-<a href="https://arxiv.org/abs/2506.16494"><img src="https://img.shields.io/badge/arXiv-Preprint-B31B1B?style=flat-square" alt="Informatics in Medicine Unlocked Journal"></a>
+<a href="https://doi.org/10.1016/j.imu.2026.101770"><img src="https://img.shields.io/badge/Informatics in Medicine Unlocked-Journal-B31B1B?style=flat-square" alt="Informatics in Medicine Unlocked Journal"></a>
 
 <p>
   <a href="https://github.com/amirrezavazifeh">Amir Reza Vazifeh</a><sup>1</sup> &nbsp;·&nbsp;
@@ -11,7 +11,7 @@
 
 <sup>1</sup> Department of Electrical and Computer Engineering, Princeton University
 
-<p><em>Preprint</em>, 2025</p>
+<p><em>Informatics in Medicine Unlocked</em>, 2026</p>
 
 ---
 
@@ -107,13 +107,13 @@ We applied the same technique to a dataset containing heartbeats from multiple i
 ## Citation
 
 ```bibtex
-@misc{vazifeh2025manifoldlearningpersonalizedlabelfree,
-      title={Manifold Learning for Personalized and Label-Free Detection of Cardiac Arrhythmias}, 
-      author={Amir Reza Vazifeh and Jason W. Fleischer},
-      year={2025},
-      eprint={2506.16494},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2506.16494}, 
+@article{Vazifeh:26,
+title = {Manifold Learning for Personalized and Label-Free Detection of Cardiac Arrhythmias},
+journal = {Informatics in Medicine Unlocked},
+pages = {101770},
+year = {2026},
+issn = {2352-9148},
+doi = {https://doi.org/10.1016/j.imu.2026.101770},
+url = {https://www.sciencedirect.com/science/article/pii/S2352914826000407},
+author = {Amir Reza Vazifeh and Jason W. Fleischer},
 }
-
