@@ -4,9 +4,9 @@
 <a href="https://doi.org/10.1016/j.imu.2026.101770"><img src="https://img.shields.io/badge/Informatics in Medicine Unlocked-Journal-B31B1B?style=flat-square" alt="Informatics in Medicine Unlocked Journal"></a>
 
 <p>
-  <a href="https://github.com/amirrezavazifeh">Amir Reza Vazifeh</a><sup>a,b,c</sup>
+  <a href="https://github.com/amirrezavazifeh">Amir Reza Vazifeh</a><sup>a,b</sup>
   &nbsp;·&nbsp;
-  <a href="https://ece.princeton.edu/people/jason-w-fleischer">Jason W. Fleischer</a><sup>a</sup>
+  <a href="https://ece.princeton.edu/people/jason-w-fleischer">Jason W. Fleischer</a,b,c><sup>a</sup>
 </p>
 
 <sup>a</sup> Department of Electrical and Computer Engineering, Princeton University, Princeton, 08544, New Jersey, USA<br>
