@@ -74,7 +74,7 @@ After projecting heartbeat signals into a 2D latent space using **UMAP** or **t-
 
 ## Results
 
-We've shown results of applying our techniques on Recording 207 of the MIT-BIH dataset, as illustrated in Figure 5. Applying UMAP on the modified limb lead II creates 6 separate clusters in 2D. The signals associated with each cluster not only have distinct morphologies but, more importantly, are labeled differently by medical doctors. Results for three more patients are included in our [paper](https://arxiv.org/abs/2506.16494).  
+We've shown results of applying our techniques on Recording 207 of the MIT-BIH dataset, as illustrated in Figure 5. Applying UMAP on the modified limb lead II creates 6 separate clusters in 2D. The signals associated with each cluster not only have distinct morphologies but, more importantly, are labeled differently by medical doctors. Results for three more patients are included in our [paper](https://doi.org/10.1016/j.imu.2026.101770).  
 
 We applied the same technique to a dataset containing heartbeats from multiple individuals. Interestingly, as shown in Figure 6 and 7, it produces distinct clusters, each corresponding to a specific person, confirming our observations in Figure 2 and highlighting strong inter-patient variability.
 
