@@ -107,6 +107,12 @@ We applied the same technique to a dataset containing heartbeats from multiple i
   To generate results of our clustering algorithm on toy datasets, run: [Clustering Algorithms.ipynb](Code/Clustering%20Algorithms.ipynb)
 ---
 
+## Contact
+
+For questions or issues, please contact [amir.vazifeh@princeton.edu].
+
+---
+
 ## Citation
 
 ```bibtex
