@@ -2,7 +2,7 @@
 <h1>Manifold Learning for Personalized and Label-free<br>Heart Arrhythmia Detection</h1>
 
 <p>
-<a href="https://amirrezavazifeh.github.io/ECG_manifold_viewer/ECG_manifold_viewer.html"><img src="https://img.shields.io/badge/Project_Page-ECG_Manifold_Viewer-blue?style=flat-square" alt="Project Page"></a>
+<a href="https://amirrezavazifeh.github.io/ECG_manifold_viewer/ECG_manifold_viewer.html"><img src="https://img.shields.io/badge/Project_Page-ECG_Manifold_Viewer-blue?style=flat-square" alt="Software Demo"></a>
 <a href="https://doi.org/10.1016/j.imu.2026.101770"><img src="https://img.shields.io/badge/Journal-Informatics in Medicine Unlocked-808080?style=flat-square&labelColor=808080&color=D2691E" alt="Informatics in Medicine Unlocked Journal"></a>
 </p>
 
