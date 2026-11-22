@@ -55,4 +55,8 @@ doi = {https://doi.org/10.1016/j.imu.2026.101770},
 url = {https://www.sciencedirect.com/science/article/pii/S2352914826000407},
 author = {Amir Reza Vazifeh and Jason W. Fleischer},
 }
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> eaf98d9ea4b9eaddeab27a3267f38f9369c848c4
