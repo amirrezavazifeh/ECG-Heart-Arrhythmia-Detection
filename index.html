@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Personalized, label-free detection of cardiac arrhythmias using manifold learning (UMAP) and image-based clustering of individual heartbeats.">
+  <title>Manifold Learning for Personalized and Label-Free Detection of Cardiac Arrhythmias</title>
+
+  <meta property="og:title" content="Manifold Learning for Personalized and Label-Free Arrhythmia Detection">
+  <meta property="og:description" content="Each person's heartbeats organize themselves: UMAP + image-based clustering, no labels required.">
+  <meta property="og:image" content="assets/Method.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for equations -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false});"></script>
+
+  <style>
+    :root {
+      --ink: #2a2526;
+      --muted: #6f6566;
+      --paper: #ffffff;
+      --ecg-paper: #fff8f6;          /* the pinkish-white of ECG chart paper */
+      --grid-minor: rgba(214, 69, 65, 0.10);
+      --grid-major: rgba(214, 69, 65, 0.24);
+      --line: #efe3e1;
+      --accent: #b8262b;             /* ECG trace red */
+      --accent-soft: #fbe9e8;
+      --accent-border: #f0c9c7;
+      --monitor: #08130e;            /* bedside-monitor screen */
+      --monitor-trace: #3ddc84;
+      --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+      --sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--paper); color: var(--ink);
+      font-family: var(--sans); font-size: 18px; line-height: 1.65;
+    }
+    a { color: var(--accent); }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .narrow { max-width: none; margin: 0 auto; }   /* text spans the same width as the figures */
+
+    /* ECG chart-paper grid: 1 mm minor squares, 5 mm major squares */
+    .ecg-grid {
+      background-color: var(--ecg-paper);
+      background-image:
+        linear-gradient(var(--grid-major) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(var(--grid-minor) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    }
+
+    /* ---------- Title block ---------- */
+    .hero { position: relative; text-align: center; padding: 26px 0 0; border-bottom: 1px solid var(--accent-border); overflow: hidden; }
+    .hero h1 {
+      font-family: var(--serif); font-weight: 600;
+      font-size: clamp(1.55rem, 3.3vw, 2.25rem); line-height: 1.18; margin: 0 auto 8px; max-width: 26em;
+    }
+    .venue { color: var(--muted); font-size: 0.98rem; margin: 0 0 6px; }
+    .authors { font-size: 1.08rem; margin: 0 0 2px; }
+    .authors a { color: var(--accent); text-decoration: none; }
+    .authors a:hover { text-decoration: underline; }
+    .authors span { white-space: nowrap; margin: 0 8px; display: inline-block; }
+    .affiliations { color: var(--muted); font-size: 0.88rem; line-height: 1.45; margin: 0 auto 12px; max-width: 900px; }
+    .affiliations span { display: inline-block; margin: 0 7px; }
+
+    .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .links a {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--paper); color: var(--accent); text-decoration: none;
+      border: 1px solid var(--accent-border);
+      padding: 5px 16px; border-radius: 999px; font-weight: 600; font-size: 0.94rem;
+    }
+    .links a:hover { background: var(--accent-soft); }
+    .links svg { width: 17px; height: 17px; fill: currentColor; }
+
+    /* Rhythm strip under the title, revealed left to right */
+    .rhythm { display: block; width: 100%; height: 54px; margin-top: 4px; }
+    .rhythm path { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+
+    /* ---------- Sections ---------- */
+    section { padding: 40px 0 28px; scroll-margin-top: 12px; }
+    section + section { border-top: 1px solid var(--line); }
+    .kicker {
+      font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); text-align: center; margin: 0 0 6px;
+    }
+    h2 { font-family: var(--serif); font-weight: 600; font-size: 1.75rem; text-align: center; margin: 0 0 22px; }
+    h3 { font-family: var(--serif); font-weight: 600; font-size: 1.2rem; margin: 32px 0 10px; }
+    p { margin: 0 0 16px; }
+    .justify { text-align: justify; hyphens: auto; }
+    .lead-in { font-size: 1.05rem; }
+
+    figure { margin: 24px 0; }
+    figure img { width: 100%; max-width: 90%; margin: 0 auto; border-radius: 4px; }   /* figures slightly narrower than text */
+    figure.medium img { max-width: 960px; margin: 0 auto; }
+    figure a.zoom { display: block; cursor: zoom-in; }
+    figcaption { color: var(--muted); font-size: 0.95rem; margin: 10px auto 0; max-width: 90%; text-align: justify; }
+    figcaption b { color: var(--ink); }
+
+    /* ---------- Challenge cards (act as tabs) ---------- */
+    .challenges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0 4px; }
+    .challenge {
+      font: inherit; text-align: center; cursor: pointer; color: var(--ink);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      border: 1px solid var(--line); border-top: 3px solid var(--accent-border); border-radius: 6px;
+      padding: 14px 16px 14px; background: var(--paper); transition: background 0.15s, border-color 0.15s;
+    }
+    .challenge:hover { background: var(--ecg-paper); }
+    .challenge[aria-selected="true"] { background: var(--accent-soft); border-color: var(--accent-border); border-top-color: var(--accent); }
+    .challenge .num { font-family: var(--mono); font-size: 0.74rem; color: var(--accent); letter-spacing: 0.08em; }
+    .challenge .title { font-family: var(--serif); font-weight: 600; font-size: 1.08rem; line-height: 1.3; }
+        .challenge-panel { padding-top: 16px; }
+    .challenge-panel[hidden] { display: none; }
+
+    .two-up { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    /* vertical rule between two side-by-side figures */
+    .two-up.divided { position: relative; column-gap: 41px; }
+    .two-up.divided::before {
+      content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: #cdbebd;
+    }
+    .sublabel { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); text-align: center; margin: 6px 0 0; letter-spacing: 0.06em; }
+
+    .dataset-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; margin: 8px 0 0; }
+    .dataset-grid figure { margin: 0; }
+    .dataset-grid figure img { max-width: 380px; margin: 0 auto; }
+    .ours { color: var(--muted); font-size: 0.85em; }
+
+    .callout {
+      border-left: 3px solid var(--accent); background: var(--ecg-paper);
+      padding: 14px 20px; margin: 20px 0; border-radius: 0 6px 6px 0;
+    }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* ---------- Equations ---------- */
+    .eq { overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
+    .eq .katex-display { margin: 0.6em 0; }
+    .eq-note { font-size: 0.95rem; color: var(--muted); margin-top: -4px; }
+
+    /* ---------- Steps ---------- */
+    .steps { counter-reset: step; list-style: none; padding: 0; margin: 0 0 16px; }
+    .steps li { counter-increment: step; position: relative; padding-left: 42px; margin-bottom: 10px; }
+    .steps li::before {
+      content: counter(step); position: absolute; left: 0; top: 2px;
+      width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+      font-family: var(--mono); font-size: 0.85rem; font-weight: 600;
+      color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-border);
+    }
+
+    /* ---------- Figure viewer (picker + image) ---------- */
+    .viewer { margin: 24px 0; }
+    .picker { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 0 0 12px; }
+    .picker button {
+      font: inherit; font-size: 0.92rem; padding: 5px 16px; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--line); background: var(--paper); color: var(--ink);
+    }
+    .picker button:hover { background: var(--accent-soft); }
+    .picker button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-border); font-weight: 600; }
+    .viewer figure { margin-top: 8px; }
+    .viewer img { transition: opacity 0.15s; }
+    .viewer img.loading { opacity: 0.4; }
+
+    /* ---------- Tables ---------- */
+    .table-scroll { overflow-x: auto; margin: 8px 0 12px; }
+    .latex-table {
+      width: 100%; border-collapse: collapse; white-space: nowrap;
+      font-family: var(--serif); font-size: 0.92rem; line-height: 1.35; color: var(--ink);
+      border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+    }
+    .latex-table th, .latex-table td { padding: 4px 12px; border: none; text-align: center; font-weight: 400; vertical-align: middle; }
+    .latex-table thead th { padding: 7px 12px; border-bottom: 1px solid var(--ink); }
+    .latex-table thead tr.group th { border-bottom: none; padding-bottom: 0; }
+    .latex-table th.group-line {
+      background: linear-gradient(var(--ink), var(--ink)) center bottom / calc(100% - 16px) 1px no-repeat;
+    }
+    .latex-table tbody + tbody { border-top: 1px solid var(--ink); }
+    .latex-table tbody tr:first-child td { padding-top: 7px; }
+    .latex-table tbody tr:last-child td { padding-bottom: 7px; }
+    .latex-table td.left, .latex-table th.left { text-align: left; }
+    .latex-table td.best { font-weight: 700; }
+    /* comparison table: wraps text instead of scrolling */
+    .latex-table.wrap { white-space: normal; }
+    .latex-table.wrap td { text-align: left; vertical-align: top; padding-top: 7px; padding-bottom: 7px; border-bottom: 1px solid var(--line); }
+    .latex-table.wrap tr:last-child td { border-bottom: none; }
+    .latex-table.wrap td:first-child { font-weight: 600; width: 20%; }
+    .latex-table.wrap td:not(:first-child) { width: 40%; }
+    .table-caption { color: var(--muted); font-size: 0.95rem; }
+    /* t-SNE vs UMAP comparison: equations inside cells */
+    .latex-table.compare { white-space: normal; table-layout: fixed; }
+    .latex-table.compare th:first-child, .latex-table.compare td:first-child { width: 17%; }
+    .latex-table.compare td { vertical-align: top; text-align: center; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    .latex-table.compare tr:last-child td { border-bottom: none; }
+    .latex-table.compare td.left { text-align: left; }
+    .latex-table.compare .katex-display { margin: 0.5em 0; overflow-x: auto; overflow-y: hidden; }
+    .cell-note { display: block; font-family: var(--sans); font-size: 0.85rem; color: var(--muted); text-align: left; }
+    .steps .eq { margin-top: 2px; }
+
+    /* ---------- Software monitor ---------- */
+    .monitor {
+      position: relative; border-radius: 10px; overflow: hidden; margin: 24px 0;
+      background-color: var(--monitor);
+      background-image:
+        linear-gradient(rgba(61, 220, 132, 0.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(61, 220, 132, 0.10) 1px, transparent 1px);
+      background-size: 32px 32px;
+      border: 1px solid #1d2c24;
+    }
+    .monitor-idle { display: grid; place-items: center; text-align: center; min-height: 360px; padding: 32px 20px; color: #cfe9da; }
+    .monitor-idle .title { font-family: var(--mono); color: var(--monitor-trace); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.85rem; margin: 0 0 6px; }
+    .monitor-idle h4 { font-family: var(--serif); font-weight: 600; font-size: 1.5rem; margin: 0 0 18px; color: #f2fbf6; }
+    .monitor-idle svg.beat { width: min(420px, 80%); height: 60px; margin: 0 auto 20px; display: block; }
+    .monitor-idle svg.beat path { fill: none; stroke: var(--monitor-trace); stroke-width: 2; stroke-linejoin: round; }
+    .monitor-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .monitor-actions button, .monitor-actions a {
+      font: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none;
+      padding: 8px 18px; border-radius: 999px; border: 1px solid var(--monitor-trace);
+    }
+    .monitor-actions button { background: var(--monitor-trace); color: var(--monitor); }
+    .monitor-actions a { background: transparent; color: var(--monitor-trace); }
+    .monitor iframe { display: block; width: 100%; height: min(78vh, 760px); border: 0; background: #fff; }
+
+    /* ---------- BibTeX ---------- */
+    .bibtex { position: relative; }
+    .bibtex pre {
+      background: var(--ecg-paper); border: 1px solid var(--line); border-radius: 6px;
+      padding: 18px 20px; overflow-x: auto; font-family: var(--mono); font-size: 0.84rem; line-height: 1.5; margin: 0;
+    }
+    .bibtex button {
+      position: absolute; top: 10px; right: 10px; font: inherit; font-size: 0.85rem;
+      padding: 4px 12px; border-radius: 6px; cursor: pointer;
+      border: 1px solid var(--line); background: var(--paper); color: var(--ink);
+    }
+
+    footer { border-top: 1px solid var(--line); padding: 28px 0 40px; text-align: center; color: var(--muted); font-size: 0.9rem; }
+    footer p { margin: 0; }
+
+    @media (max-width: 640px) {
+      body { font-size: 17px; }
+      .hero { padding-top: 20px; }
+      .affiliations span { display: block; }
+      .challenges, .two-up, .dataset-grid { grid-template-columns: 1fr; }
+      .two-up.divided::before { display: none; }
+      .justify, figcaption { text-align: left; }
+      figure img, figcaption { max-width: 100%; }
+      .latex-table.wrap td:first-child { width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =================== TITLE, AUTHORS, LINKS =================== -->
+  <header class="hero ecg-grid">
+    <div class="container">
+      <h1>Manifold Learning for Personalized and Label-Free Detection of Cardiac Arrhythmias</h1>
+
+      <p class="venue"><em>Informatics in Medicine Unlocked</em>, 2026</p>
+
+      <p class="authors">
+        <span><a href="https://amirrezavazifeh.github.io/">Amir Reza Vazifeh</a><sup>a,b</sup></span>
+        <span><a href="https://ece.princeton.edu/people/jason-w-fleischer">Jason W. Fleischer</a><sup>a,b,c</sup></span>
+      </p>
+      <p class="affiliations">
+        <span><sup>a</sup>Electrical and Computer Engineering, Princeton University</span>
+        <span><sup>b</sup>Princeton Precision Health</span>
+        <span><sup>c</sup>Omenn-Darling Bioengineering Institute</span>
+      </p>
+
+      <div class="links">
+        <a href="https://doi.org/10.1016/j.imu.2026.101770">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6V2zm8 1.5V8h4.5L14 3.5zM8 12h8v1.5H8V12zm0 3h8v1.5H8V15zm0 3h5v1.5H8V18z"/></svg>
+          Paper
+        </a>
+        <a href="https://amirrezavazifeh.github.io/ECG-manifold-viewer/index.html" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v12H3V4zm2 2v8h14V6H5zm3 12h8v2H8v-2z"/></svg>
+          Software Demo
+        </a>
+        <a href="https://github.com/amirrezavazifeh/ECG-Heart-Arrhythmia-Detection" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17 4.6 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
+          Code
+        </a>
+      </div>
+    </div>
+
+    <!-- Rhythm strip: sinus beats with one premature ventricular contraction (path built in the script below) -->
+    <svg class="rhythm" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <clipPath id="rhythm-clip">
+          <rect id="rhythm-reveal" x="0" y="0" width="1200" height="60"></rect>
+        </clipPath>
+      </defs>
+      <path id="rhythm-path" clip-path="url(#rhythm-clip)" vector-effect="non-scaling-stroke"></path>
+    </svg>
+  </header>
+
+  <main class="container">
+
+    <!-- =================== INTRODUCTION =================== -->
+    <section id="introduction">
+      <div class="narrow">
+        <h2>Introduction</h2>
+        <p class="justify">
+          A cardiac arrhythmia is an abnormal heart rhythm, in which faulty electrical signaling makes the heart beat too fast, too
+          slow or irregularly. Arrhythmias affect an estimated 1.5–5% of the population, yet they often occur unpredictably and without
+          symptoms. The electrocardiogram (ECG) is the essential non-invasive tool for detecting them, since each arrhythmia changes the
+          timing or shape of the heartbeats it records. Because manual ECG reading is slow and error-prone, many automated methods have
+          been developed, and almost all of them are supervised: they either train a classifier on hand-crafted features or train a deep
+          learning model on labeled heartbeats. Supervised models, however, face three limitations:
+        </p>
+      </div>
+
+      <div class="challenges" role="tablist" aria-label="Challenges for supervised ECG models">
+        <button type="button" class="challenge" role="tab" id="tab-leads" aria-controls="panel-leads" aria-selected="true">
+          <span class="num">CHALLENGE 01</span>
+          <span class="title">Lead and electrode dependence</span>
+        </button>
+        <button type="button" class="challenge" role="tab" id="tab-people" aria-controls="panel-people" aria-selected="false">
+          <span class="num">CHALLENGE 02</span>
+          <span class="title">Inter-patient variability</span>
+        </button>
+        <button type="button" class="challenge" role="tab" id="tab-data" aria-controls="panel-data" aria-selected="false">
+          <span class="num">CHALLENGE 03</span>
+          <span class="title">Dataset bias and labeling</span>
+        </button>
+      </div>
+
+      <!-- ---------- Challenge 1: leads ---------- -->
+      <div class="challenge-panel" id="panel-leads" role="tabpanel" aria-labelledby="tab-leads">
+        <div class="narrow">
+          <p class="justify">
+            A standard 12-lead ECG uses 10 electrodes to record the heart from 12 angles: limb leads I, II, III, augmented leads aVR,
+            aVL, aVF, and chest leads V1–V6. Each heartbeat therefore appears as 12 different waveforms (Figure&nbsp;1), although not all
+            of them are independent; for example, aVF can be derived from aVR and aVL. Because the waveforms differ, a supervised model
+            must be trained separately for each lead, and datasets rarely include them all: <a href="https://physionet.org/content/mitdb/1.0.0/" target="_blank" rel="noopener">MIT-BIH</a>, the standard benchmark, has only two
+            leads per recording, lead II in most and a second lead (V1, V2, V4 or V5) that varies between patients. Moreover, if electrodes
+            are connected in slightly different positions during the test phase (i.e., after the model has been trained), the signal
+            quality may change, leading to potential model failure.
+          </p>
+        </div>
+        <figure>
+          <a class="zoom" href="assets/12_leads.png" target="_blank" rel="noopener">
+            <img src="assets/12_leads.png" alt="Five seconds of ECG from all 12 leads of a standard setup: I, II, III, aVR, aVL, aVF and V1 to V6, each showing a different waveform shape">
+          </a>
+          <figcaption>
+            <b>Figure 1. One heartbeat, twelve waveforms.</b> ECG signals from all leads of a standard 12-lead setup, recorded
+            simultaneously. Data from recording A6371 of the CPSC2018 dataset.
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- ---------- Challenge 2: people ---------- -->
+      <div class="challenge-panel" id="panel-people" role="tabpanel" aria-labelledby="tab-people" hidden>
+        <div class="narrow">
+          <p class="justify">
+            Beats with the same label can look very different from one person to the next (Figure&nbsp;2), so a model trained on a
+            population is less reliable on a new patient. The differences are not limited to arrhythmias. The
+            <a href="https://physionet.org/content/nsrdb/1.0.0/" target="_blank" rel="noopener">Normal Sinus Rhythm Database (NSR-DB)</a>
+            contains mostly normal beats, recorded on two different leads (ECG&nbsp;1 and ECG&nbsp;2). We averaged the heartbeats of each
+            person and compared these averages from person to person (Figure&nbsp;3). Even in healthy hearts, the average normal beat
+            differs markedly between people in the size of the P and T waves, the shape of the QRS complex and even its polarity.
+          </p>
+        </div>
+        <figure>
+          <a class="zoom" href="assets/different_people_MIT-BIH.png" target="_blank" rel="noopener">
+            <img src="assets/different_people_MIT-BIH.png" alt="Grid of heartbeats from ten different MIT-BIH recordings for labels N, V and A, showing large differences between people for the same label">
+          </a>
+          <figcaption>
+            <b>Figure 2. ECG variability across people.</b> Each subplot in a given row corresponds to the same arrhythmic label but comes
+            from a different person. Top row: normal beats (N); middle row: premature ventricular contractions (V); bottom row: atrial
+            premature beats (A). All signals are recorded using lead II of the MIT-BIH dataset.
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="two-up divided">
+            <div>
+              <a class="zoom" href="assets/NSR-DB_different_people_1.png" target="_blank" rel="noopener">
+                <img src="assets/NSR-DB_different_people_1.png" alt="Average normal heartbeat of each of the 18 NSR-DB subjects on lead ECG 1">
+              </a>
+              <p class="sublabel">ECG 1</p>
+            </div>
+            <div>
+              <a class="zoom" href="assets/NSR-DB_different_people_2.png" target="_blank" rel="noopener">
+                <img src="assets/NSR-DB_different_people_2.png" alt="Average normal heartbeat of each of the 18 NSR-DB subjects on lead ECG 2">
+              </a>
+              <p class="sublabel">ECG 2</p>
+            </div>
+          </div>
+          <figcaption>
+            <b>Figure 3. Healthy hearts differ too.</b> Average normal heartbeat of each of the 18 people in NSR-DB, on the first lead
+            (ECG&nbsp;1, left) and the second lead (ECG&nbsp;2, right). Amplitudes are normalized.
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- ---------- Challenge 3: datasets ---------- -->
+      <div class="challenge-panel" id="panel-data" role="tabpanel" aria-labelledby="tab-data" hidden>
+        <div class="narrow">
+          <p class="justify">
+            Training datasets are often biased, both in demographic representation and in the types of arrhythmia they contain. In
+            MIT-BIH, for example, over 80% of the beats are normal, and most of the arrhythmic beats are premature ventricular
+            contractions (PVCs) (Figure&nbsp;4). As a result, many studies have designed models to detect one specific pattern, most often
+            PVCs, which then cannot classify other types of arrhythmia. In addition, ECG signals are labeled according to different
+            standards, and a supervised model can only predict the labels present in its training data.
+          </p>
+        </div>
+        <div class="dataset-grid">
+          <div>
+            <div class="table-scroll">
+              <table class="latex-table">
+                <thead>
+                  <tr><th class="left">Parameter</th><th>MIT-BIH</th><th>NSR-DB</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="left">Number of recordings</td><td>48 <span class="ours">(our study: 40*)</span></td><td>18</td></tr>
+                  <tr><td class="left">Subjects</td><td>47</td><td>18 <span class="ours">(5 men, 13 women)</span></td></tr>
+                  <tr><td class="left">Recording length</td><td>~30 min</td><td>~24 h</td></tr>
+                  <tr><td class="left">Number of leads</td><td>2 <span class="ours">(mostly II, V1)</span></td><td>2 <span class="ours">(ECG 1, ECG 2)</span></td></tr>
+                  <tr><td class="left">Sampling frequency</td><td>360 Hz</td><td>128 Hz</td></tr>
+                  <tr><td class="left">R-peak locations</td><td>Annotated</td><td>Annotated</td></tr>
+                  <tr><td class="left">Label for each heartbeat</td><td>Yes</td><td>Yes <span class="ours">(mostly normal)</span></td></tr>
+                  <!-- TODO: fill in the number of NSR-DB heartbeats used in the study -->
+                  <tr><td class="left">Number of heartbeats</td><td>112,551 <span class="ours">(our study: 97,117*)</span></td><td>1,806,756</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="table-caption">
+              * For consistency, we selected the MIT-BIH recordings with II as the first lead and V1 as the second, leaving 40
+              recordings and 97,117 heartbeats.
+            </p>
+          </div>
+          <figure>
+            <a class="zoom" href="assets/Dataset_Overview.png" target="_blank" rel="noopener">
+              <img src="assets/Dataset_Overview.png" alt="Pie charts of AAMI classes. MIT-BIH: 81.97% normal, 7.35% ventricular ectopic, 2.78% supraventricular ectopic, 4.01% unknown, 3.08% others, small fusion share. NSR-DB: 95.72% normal, 4.27% others">
+            </a>
+            <figcaption>
+              <b>Figure 4. Class imbalance.</b> Distribution of AAMI classes in MIT-BIH and NSR-DB.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="narrow">
+        <div class="callout">
+          <p class="justify">
+            <b>Our approach.</b> A promising alternative is manifold learning, which rests on the hypothesis that real-world
+            high-dimensional data often lie on low-dimensional latent manifolds within the high-dimensional space. Rather than learning
+            one mapping from population labels, we let each person's heartbeats organize themselves: the beats of each recording are
+            embedded into a 2D latent space, where normal and irregular beats tend to form separable clusters. This requires no labels,
+            and the same procedure applies to any lead.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== HEARTBEAT SEGMENTATION =================== -->
+    <section id="segmentation">
+      <div class="narrow">
+        <h2>Heartbeat Segmentation</h2>
+        <p class="justify">
+          The first step in real-world analysis is to segment the ECG signal into isolated heartbeats. This requires identifying the
+          R-peaks, which must be detected from the raw signal. Several algorithms exist for this purpose, including those of
+          <a href="https://biomedical-engineering-online.biomedcentral.com/articles/10.1186/1475-925X-3-28" target="_blank" rel="noopener">Christov</a>,
+          <a href="https://ieeexplore.ieee.org/document/4122029" target="_blank" rel="noopener">Pan–Tompkins</a> and the
+          <a href="https://link.springer.com/article/10.3758/s13428-020-01516-y" target="_blank" rel="noopener">NeuroKit2</a> framework.
+          Once the R-peaks are known, the signal must be segmented so that each beat corresponds to exactly one waveform. The simplest approach is a fixed time
+          window, such as 1&nbsp;s (0.5&nbsp;s before and after each R-peak), but both normal and arrhythmic heart rate variability can
+          make consecutive beats overlap, contaminating the target signal and complicating downstream analysis. Instead, we use a
+          constant division ratio between R-peaks: each heartbeat consists of the last third of the previous RR interval and the first two
+          thirds of the next one (Figure&nbsp;5),
+        </p>
+        <div class="eq">$$\text{beat}_n = \Big[\, R_n - \tfrac{1}{3}\,(R_n - R_{n-1}),\;\; R_n + \tfrac{2}{3}\,(R_{n+1} - R_n) \,\Big].$$</div>
+        <p class="justify">
+          Because this produces beats of different lengths, all waveforms are resampled to 256 points (the power of two closest to the
+          average beat length of 267 samples), with an anti-aliasing filter to avoid distortion during downsampling. Finally, baseline
+          wander, the low-frequency drift caused by respiration or electrode movement, is removed by subtracting a median-filtered copy of
+          each beat (kernel size 127) from the original. Because the kernel is large relative to the beat, the filtered copy captures only
+          the slow drift, and subtracting it leaves a baseline-corrected waveform.
+        </p>
+      </div>
+      <figure>
+        <a class="zoom" href="assets/Segmentation.png" target="_blank" rel="noopener">
+          <img src="assets/Segmentation.png" alt="Left: annotated ECG showing P, QRS and T waves and the one-third / two-thirds RR division. Right: segmentation of recordings 234, 209 and 233 with N, A and V beats">
+        </a>
+        <figcaption>
+          <b>Figure 5. Heartbeat segmentation.</b> Left: the division rule on recording 100. Right: segmentation of normal beats (N),
+          premature ventricular contractions (V) and atrial premature beats (A) from three recordings, showing that the rule holds
+          under different arrhythmic conditions.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- =================== NEIGHBOR EMBEDDING =================== -->
+    <section id="umap">
+      <div class="narrow">
+        <h2>Neighbor Embedding Framework</h2>
+        <p class="justify">
+          Consider a dataset \(X \in \mathbb{R}^{N \times n}\) of \(N\) samples \(\{\mathbf{x}_i\}_{i=1}^{N}\), each with \(n\)
+          dimensions; in our case, the samples are \(N\) heartbeats, each resampled to \(n = 256\) points. Dimensionality reduction
+          maps \(X\) to \(Y \in \mathbb{R}^{N \times d}\), with embedded points \(\mathbf{y}_i \in \mathbb{R}^{d}\) and \(d \ll n\)
+          (typically \(d = 2\) for visualization). The classic example is PCA, a linear method that rotates the data to align with the
+          directions of greatest variance and keeps the \(d\) largest.
+        </p>
+        <p class="justify">
+          Neighbor embedding methods, such as
+          <a href="https://www.jmlr.org/papers/v9/vandermaaten08a.html" target="_blank" rel="noopener">t-SNE</a> and
+          <a href="https://arxiv.org/abs/1802.03426" target="_blank" rel="noopener">UMAP</a>, are nonlinear. Instead of variance, they
+          look at the distances and topology between neighboring points and try to preserve as much of the original neighborhood
+          structure as possible, so that curved, separated groups of points remain distinct clusters in lower dimension. Both UMAP and t-SNE follow
+          three similar steps:
+        </p>
+        <ol class="steps">
+          <li>
+            <b>Build a high-dimensional graph.</b> The weight of the edge between points \(i\) and \(j\) is
+            <div class="eq">$$p_{ij} = f_H\big(d_H(\mathbf{x}_i, \mathbf{x}_j) \,\big|\, \{\mathbf{x}_i\}\big),$$</div>
+            where \(d_H(\cdot,\cdot)\) is a distance metric between two data points (e.g., Euclidean) and \(f_H(\cdot)\) is a kernel
+            that turns this distance into a similarity, so that close points get large weights and distant points get weights near zero.
+          </li>
+          <li>
+            <b>Build a low-dimensional graph</b> in the same way on the embedded points:
+            <div class="eq">$$q_{ij} = f_L\big(d_L(\mathbf{y}_i, \mathbf{y}_j) \,\big|\, \{\mathbf{y}_i\}\big),$$</div>
+            where \(d_L(\cdot,\cdot)\) is the distance between two embedded points (Euclidean in 2D) and \(f_L(\cdot)\) is the kernel
+            that converts it into a similarity.
+          </li>
+          <li>
+            <b>Match the two graphs.</b> We look for the embedding \(\{\mathbf{y}_i\}_{i=1}^{N}\) whose low-dimensional graph best
+            reproduces the high-dimensional one:
+            <div class="eq">$$\{\mathbf{y}_i^{*}\} = \arg\min_{\{\mathbf{y}_i\}} \; \sum_{i,j} \ell\big(p_{ij}, q_{ij}\big),$$</div>
+            where \(\ell\) measures the mismatch between \(p_{ij}\) and \(q_{ij}\). The \(p_{ij}\) are fixed by the data; only the
+            positions \(\mathbf{y}_i\) are optimized, typically by gradient descent.
+          </li>
+        </ol>
+        <p class="justify">
+          t-SNE and UMAP differ only in the choice of \(f_H\), \(f_L\) and \(\ell\):
+        </p>
+      </div>
+
+      <div class="narrow">
+        <div class="table-scroll">
+          <table class="latex-table compare">
+            <thead>
+              <tr><th class="left">Step</th><th>t-SNE</th><th>UMAP</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="left"><b>1.</b> High-dim. graph \(f_H\)</td>
+                <td>
+                  Gaussian kernel over all points
+                  $$p_{j|i} = \frac{\exp\!\big(-\lVert \mathbf{x}_i - \mathbf{x}_j \rVert_2^2 / 2\sigma_i^2\big)}{\sum_{k \neq i} \exp\!\big(-\lVert \mathbf{x}_i - \mathbf{x}_k \rVert_2^2 / 2\sigma_i^2\big)}$$
+                  $$p_{ij} = \frac{p_{j|i} + p_{i|j}}{2N}$$
+                  <span class="cell-note">\(\sigma_i\) matches a user-set perplexity \(P = 2^{H_i}\), with \(H_i = -\sum_{j} p_{j|i} \log_2 p_{j|i}\).</span>
+                </td>
+                <td>
+                  Exponential kernel on the \(k\)-nearest-neighbor graph
+                  $$p_{j|i} = \begin{cases} \exp\!\Big(-\dfrac{d_H(\mathbf{x}_i, \mathbf{x}_j) - \rho_i}{\sigma_i}\Big) & \mathbf{x}_j \in \mathrm{KNN}(\mathbf{x}_i, k) \\[4pt] 0 & \text{otherwise} \end{cases}$$
+                  $$p_{ij} = p_{j|i} + p_{i|j} - p_{j|i}\, p_{i|j}$$
+                  <span class="cell-note">\(\rho_i\) is the distance to the nearest neighbor; \(\sigma_i\) is set so that \(\sum_j p_{j|i} = \log_2 k\).</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="left"><b>2.</b> Low-dim. graph \(f_L\)</td>
+                <td>
+                  Student-t kernel, normalized over all pairs
+                  $$q_{ij} = \frac{\big(1 + \lVert \mathbf{y}_i - \mathbf{y}_j \rVert_2^2\big)^{-1}}{\sum_{k \neq l} \big(1 + \lVert \mathbf{y}_k - \mathbf{y}_l \rVert_2^2\big)^{-1}}$$
+                </td>
+                <td>
+                  Unnormalized, tunable kernel
+                  $$q_{ij} = \frac{1}{1 + a\,\lVert \mathbf{y}_i - \mathbf{y}_j \rVert_2^{2b}}$$
+                  <span class="cell-note">\(a, b\) are fitted from the user-set minimum distance \(m_d\) between embedded points.</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="left"><b>3.</b> Loss \(\ell\)</td>
+                <td>
+                  Kullback–Leibler divergence
+                  $$\mathcal{L} = \sum_{i,j} p_{ij} \log \frac{p_{ij}}{q_{ij}}$$
+                </td>
+                <td>
+                  Binary cross-entropy
+                  $$\mathcal{L} = \sum_{i,j} \underbrace{p_{ij} \log \frac{p_{ij}}{q_{ij}}}_{\text{attraction}} + \underbrace{(1 - p_{ij}) \log \frac{1 - p_{ij}}{1 - q_{ij}}}_{\text{repulsion}}$$
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== METHOD =================== -->
+    <section id="method">
+      <div class="narrow">
+        <h2>Method</h2>
+        <p class="justify">
+          Our pipeline combines heartbeat-level analysis with unsupervised nonlinear dimensionality reduction (Figure&nbsp;6). After
+          segmentation, the 256-point heartbeats of each recording are embedded with UMAP into a 2D latent space. Each lead is processed
+          independently with the same settings, so no lead-specific model has to be trained. In this space, normal beats tend to form
+          islands that are separate from those of irregular beats, and when different types of irregular beats are sufficiently
+          different in morphology, they can also fall into islands of their own. These islands can then be clustered either with
+          classical algorithms, such as k-means or <a href="https://doi.org/10.1007/978-3-642-37456-2_14" target="_blank" rel="noopener">HDBSCAN</a>,
+          or by separating them with computer vision techniques, which allows the step to be automated.
+        </p>
+      </div>
+      <figure>
+        <a class="zoom" href="assets/Method.png" target="_blank" rel="noopener">
+          <img src="assets/Method.png" alt="Pipeline: ECG leads II and V1, R-peak detection, segmentation and baseline removal, and UMAP projection into 2D for a single patient and for a mixed population">
+        </a>
+        <figcaption>
+          <b>Figure 6. Overview of the approach.</b> Raw ECG from each lead is segmented into heartbeats, which are embedded in 2D with
+          UMAP, either for a single patient or for a mixed population of patients.
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- =================== POPULATION ANALYSIS =================== -->
+    <section id="population">
+      <div class="narrow">
+        <h2>Population Analysis</h2>
+        <p class="justify">
+          We first applied the method to populations, pooling the heartbeats of all people in each of three datasets:
+          <a href="https://physionet.org/content/mitdb/1.0.0/" target="_blank" rel="noopener">MIT-BIH</a> (40 people),
+          <a href="https://physionet.org/content/nsrdb/1.0.0/" target="_blank" rel="noopener">NSR-DB</a> (18 people) and
+          <a href="https://physionet.org/content/afdb/1.0.0/" target="_blank" rel="noopener">AF-DB</a> (23 people). After running both UMAP and t-SNE, we observed that the heartbeats of each person tend to cluster together,
+          forming visually separable clusters in 2D. We then relabeled the embeddings by arrhythmia class and sex, and the
+          separation between people still appeared to be the most distinguishing factor. Each recording has two leads (II and V1 for
+          MIT-BIH; unspecified leads for NSR-DB and AF-DB), and the same pattern appears on both leads.
+          The fact that signals from different people are so distinctly separated in the 2D latent space suggests that heartbeats are
+          highly individual-specific and can act as a unique fingerprint. Consequently, training a supervised model on signals from
+          other people may not be effective for detecting arrhythmias in a new individual.
+        </p>
+      </div>
+
+      <div class="viewer" id="pop-viewer">
+        <div class="picker" aria-label="Dataset"></div>
+        <figure>
+          <a class="zoom" target="_blank" rel="noopener"><img alt=""></a>
+          <figcaption></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- =================== RESULTS =================== -->
+    <section id="results">
+      <div class="narrow">
+        <h2>Personalized Analysis</h2>
+        <p class="justify">
+          We then applied the same pipeline to the heartbeats of each person separately. In most recordings, normal and irregular
+          heartbeats form separate clusters in the 2D embedding. Normal heartbeats are also often divided into several clusters, owing to
+          differences in beat amplitude or in the timing of individual peaks, which shows that the embedding can capture variation even
+          within a single class. To show how useful the 2D embedding is for downstream arrhythmia classification, we also trained a
+          simple classifier (k-nearest neighbors) on top of it. Select a recording below.
+        </p>
+      </div>
+
+      <div class="viewer" id="patient-viewer">
+        <div class="picker" aria-label="Recording"></div>
+        <figure>
+          <a class="zoom" target="_blank" rel="noopener"><img alt=""></a>
+          <figcaption></figcaption>
+        </figure>
+      </div>
+
+      <div class="narrow">
+        <p class="justify">
+        </p>
+      </div>
+    </section>
+
+    <!-- =================== SOFTWARE =================== -->
+    <section id="software">
+      <div class="narrow">
+        <h2>Software Demo</h2>
+        <p class="justify">
+          <!-- TODO: describe the viewer's main features here -->
+          To make the analysis easy to explore, we built the ECG Manifold Viewer, an interactive browser-based tool for exploring
+          heartbeat embeddings. It runs entirely in the browser; open it in a new tab below.
+        </p>
+      </div>
+
+      <div class="monitor" id="monitor">
+        <div class="monitor-idle">
+          <div>
+            <p class="title">Interactive demo</p>
+            <h4>ECG Manifold Viewer</h4>
+            <svg class="beat" viewBox="0 0 420 60" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0 40 H70 l6 -4 l6 4 H100 l4 6 l6 -40 l6 50 l4 -16 H150 l10 -8 l10 8 H230 l6 -4 l6 4 H260 l4 6 l6 -40 l6 50 l4 -16 H310 l10 -8 l10 8 H420"/>
+            </svg>
+            <div class="monitor-actions">
+              <a href="https://amirrezavazifeh.github.io/ECG-manifold-viewer/index.html" target="_blank" rel="noopener">Open in new tab &#8599;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== BIBTEX =================== -->
+    <section id="bibtex">
+      <div class="narrow">
+        <h2>BibTeX</h2>
+        <div class="bibtex">
+          <button type="button" id="copy-bib">Copy</button>
+<pre id="bib">@article{vazifeh:26,
+title = {Manifold learning for personalized and label-free detection of cardiac arrhythmias},
+journal = {Informatics in Medicine Unlocked},
+volume = {64},
+pages = {101770},
+year = {2026},
+issn = {2352-9148},
+doi = {https://doi.org/10.1016/j.imu.2026.101770},
+url = {https://www.sciencedirect.com/science/article/pii/S2352914826000407},
+author = {Amir Reza Vazifeh and Jason W. Fleischer},
+}</pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Contact: <a href="mailto:amir.vazifeh@princeton.edu">amir.vazifeh@princeton.edu</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // ---------- Rhythm strip in the header ----------
+    (function () {
+      const base = 42;   // baseline y in a 60-unit-tall strip
+      // One sinus beat as (x offset, y offset from baseline), 120 units wide
+      const sinus = [[0,0],[14,0],[18,-3],[22,-4],[26,-3],[30,0],[37,0],[40,3],[44,-34],[48,9],[51,0],[60,0],[68,-5],[74,-7],[80,-5],[88,0],[120,0]];
+      // Premature ventricular contraction: no P wave, wide and tall QRS
+      const pvc = [[0,0],[6,0],[12,-18],[18,-28],[26,13],[34,17],[42,3],[50,0],[58,4],[66,5],[74,2],[82,0],[140,0]];
+      const pattern = [sinus, sinus, sinus, sinus, sinus, pvc];
+      let x = 0, i = 0, d = "M0 " + base;
+      while (x < 1200) {   // repeat beats until the strip is full
+        const beat = pattern[i++ % pattern.length];
+        beat.forEach(function (p) { d += " L" + (x + p[0]) + " " + (base + p[1]); });
+        x += beat[beat.length - 1][0];
+      }
+      document.getElementById("rhythm-path").setAttribute("d", d);
+
+      // Sweep the trace in from left to right, unless the user prefers reduced motion
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const rect = document.getElementById("rhythm-reveal");
+        rect.setAttribute("width", "0");
+        const anim = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+        anim.setAttribute("attributeName", "width");
+        anim.setAttribute("from", "0");
+        anim.setAttribute("to", "1200");
+        anim.setAttribute("dur", "4s");
+        anim.setAttribute("fill", "freeze");
+        rect.appendChild(anim);
+        anim.beginElement();
+      }
+    })();
+
+    // ---------- Introduction: challenge cards switch the panel below ----------
+    (function () {
+      const tabs = document.querySelectorAll('.challenges [role="tab"]');
+      tabs.forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          tabs.forEach(function (t) {
+            const selected = t === tab;
+            t.setAttribute("aria-selected", selected ? "true" : "false");
+            document.getElementById(t.getAttribute("aria-controls")).hidden = !selected;
+          });
+        });
+      });
+    })();
+
+    // ---------- Generic figure viewer: a row of buttons that swaps the image and caption ----------
+    // startIndex (optional) picks which item is shown first; defaults to the first one.
+    function makeViewer(rootId, items, startIndex) {
+      const root = document.getElementById(rootId);
+      const picker = root.querySelector(".picker");
+      const link = root.querySelector("a.zoom");
+      const img = root.querySelector("img");
+      const caption = root.querySelector("figcaption");
+
+      function show(i) {
+        const item = items[i];
+        img.classList.add("loading");
+        img.src = item.src;
+        img.alt = item.alt;
+        link.href = item.src;
+        caption.innerHTML = item.caption;
+        picker.querySelectorAll("button").forEach(function (b, j) {
+          b.setAttribute("aria-pressed", j === i ? "true" : "false");
+        });
+      }
+      items.forEach(function (item, i) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = item.label;
+        b.addEventListener("click", function () { show(i); });
+        picker.appendChild(b);
+      });
+      img.addEventListener("load", function () { img.classList.remove("loading"); });
+      img.addEventListener("error", function () { img.classList.remove("loading"); });
+      if (items.length < 2) picker.hidden = true;
+      show(startIndex || 0);
+    }
+
+    // Population studies: MIT-BIH, NSR-DB and AF-DB
+    makeViewer("pop-viewer", [
+      {
+        label: "MIT-BIH",
+        src: "assets/Population_MIT_BIH.jpg",
+        alt: "PCA, t-SNE and UMAP of heartbeats from 40 MIT-BIH recordings on leads II and V1, colored by no label, AAMI label, recording and sex",
+        caption: "<b>MIT-BIH Arrhythmia Database, 40 recordings.</b> 2D embeddings from PCA, t-SNE and UMAP for the II lead (top three rows) and the V1 lead (bottom three rows). Columns: (1) no labels, (2) AAMI arrhythmia class, (3) recording, (4) sex."
+      },
+      {
+        label: "NSR-DB",
+        src: "assets/Population_NSRDB.jpg",
+        alt: "PCA, t-SNE and UMAP of heartbeats from 18 NSR-DB recordings on two leads, colored by no label, AAMI label, recording and sex",
+        caption: "<b>MIT-BIH Normal Sinus Rhythm Database, 18 recordings.</b> 2D embeddings from PCA, t-SNE and UMAP for the first lead, ECG&nbsp;1 (top three rows), and the second lead, ECG&nbsp;2 (bottom three rows). Columns: (1) no labels, (2) AAMI arrhythmia class, (3) recording, (4) sex."
+      }
+      ,
+      {
+        label: "AF-DB",
+        src: "assets/Population_AFDB.png",
+        alt: "2D embeddings of heartbeats from the MIT-BIH Atrial Fibrillation Database, pooled across all people",
+        // TODO: adjust this caption to match the panels in Population_AFDB.png
+        caption: "<b>MIT-BIH Atrial Fibrillation Database (AF-DB).</b> 2D embeddings of heartbeats pooled from all people in the database and colored by label and by recording."
+      }
+    ], 1);   // 1 = show NSR-DB first
+
+    // Per-patient results (one PNG per recording; add more recordings as entries)
+    // TODO: check each caption against its figure
+    makeViewer("patient-viewer", [
+      {
+        label: "Recording 207",
+        src: "assets/207_all.jpg",
+        alt: "Recording 207: 2D embeddings, clustering of the UMAP embedding with labels, and example beats per cluster",
+        caption: "<b>Recording 207.</b> Top: 2D embeddings with PCA, t-SNE and UMAP for II and V1, and confusion matrices of a k-NN classifier (k&nbsp;=&nbsp;5) on the raw signal and on the UMAP embedding. Middle: clustering of the 2D UMAP embedding of II, compared with AAMI and MIT-BIH labels. Bottom: mean, variance and ten example beats for each cluster."
+      },
+      {
+        label: "Recording 116",
+        src: "assets/116_all.jpg",
+        alt: "Recording 116: 2D embeddings, clustering of the UMAP embedding with labels, and example beats per cluster",
+        caption: "<b>Recording 116.</b> Top: 2D embeddings with PCA, t-SNE and UMAP for II and V1, and confusion matrices of a k-NN classifier (k&nbsp;=&nbsp;5) on the raw signal and on the UMAP embedding. Middle: clustering of the 2D UMAP embedding of II, compared with AAMI and MIT-BIH labels. Bottom: mean, variance and ten example beats for each cluster."
+      },
+      {
+        label: "Recording 102",
+        src: "assets/102_all.jpg",
+        alt: "Recording 102: 2D embeddings, clustering of the UMAP embedding with labels, and example beats per cluster",
+        caption: "<b>Recording 102.</b> Top: 2D embeddings with PCA, t-SNE and UMAP for II and V1, and confusion matrices of a k-NN classifier (k&nbsp;=&nbsp;5) on the raw signal and on the UMAP embedding. Middle: clustering of the 2D UMAP embedding of II, compared with AAMI and MIT-BIH labels. Bottom: mean, variance and ten example beats for each cluster."
+      },
+      {
+        label: "Recording 119",
+        src: "assets/119_all.jpg",
+        alt: "Recording 119: 2D embeddings, clustering of the UMAP embedding with labels, and example beats per cluster",
+        caption: "<b>Recording 119.</b> Top: 2D embeddings with PCA, t-SNE and UMAP for II and V1, and confusion matrices of a k-NN classifier (k&nbsp;=&nbsp;5) on the raw signal and on the UMAP embedding. Middle: clustering of the 2D UMAP embedding of II, compared with AAMI and MIT-BIH labels. Bottom: mean, variance and ten example beats for each cluster."
+      },
+      {
+        label: "Recording 231",
+        src: "assets/231_all.jpg",
+        alt: "Recording 231: 2D embeddings, clustering of the UMAP embedding with labels, and example beats per cluster",
+        caption: "<b>Recording 231.</b> Top: 2D embeddings with PCA, t-SNE and UMAP for II and V1, and confusion matrices of a k-NN classifier (k&nbsp;=&nbsp;5) on the raw signal and on the UMAP embedding. Middle: clustering of the 2D UMAP embedding of II, compared with AAMI and MIT-BIH labels. Bottom: mean, variance and ten example beats for each cluster."
+      }
+    ]);
+
+    // ---------- Copy BibTeX ----------
+    document.getElementById("copy-bib").addEventListener("click", function () {
+      const btn = this;
+      navigator.clipboard.writeText(document.getElementById("bib").textContent).then(function () {
+        btn.textContent = "Copied";
+        setTimeout(function () { btn.textContent = "Copy"; }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>
