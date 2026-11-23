@@ -56,5 +56,3 @@ url = {https://www.sciencedirect.com/science/article/pii/S2352914826000407},
 author = {Amir Reza Vazifeh and Jason W. Fleischer},
 }
 ```
-=======
-
